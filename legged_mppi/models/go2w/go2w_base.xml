@@ -1,7 +1,7 @@
-<mujoco model="go2w_description">
+<mujoco model="go2w">
   <option iterations="50" timestep="0.001" solver="PGS" gravity="0 0 -9.81" />
 
-  <compiler angle="radian" meshdir="meshes" eulerseq="zyx" autolimits="true" />
+  <compiler angle="radian" meshdir="assets" eulerseq="zyx" autolimits="true" />
 
   <default>
     <joint limited="true" damping="0.01" armature="0.01" frictionloss="0.01" />
