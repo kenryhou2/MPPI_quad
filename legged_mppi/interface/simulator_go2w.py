@@ -6,6 +6,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 import tqdm
 from PIL import Image
+import copy as cp
 
 class Simulator:
     """
@@ -32,7 +33,8 @@ class Simulator:
         viewer (object): The MuJoCo viewer.
     """
     def __init__(self, filter=None, agent=None,
-                 model_path = os.path.join(os.path.dirname(__file__), "../models/go1/task_simulate.xml"),
+                #  model_path = os.path.join(os.path.dirname(__file__), "../models/go1/task_simulate.xml"),
+                model_path = os.path.join(os.path.dirname(__file__), "../models/go2w/go2w.xml"),
                 T = 200, dt = 0.01, viewer = True, gravity = True,
                 # stiff=False
                 timeconst=0.02, dampingratio=1.0, ctrl_rate=100,
@@ -135,8 +137,49 @@ class Simulator:
         image = Image.fromarray(np.flipud(frame))
         image.save(filename)
 
+    def get_joint_dof(self, model, i):
+        """Compute the DOF for joint i from model.jnt_qposadr."""
+        if i < model.njnt - 1:
+            return model.jnt_qposadr[i + 1] - model.jnt_qposadr[i]
+        else:
+            return model.nq - model.jnt_qposadr[i]
+
+    def get_wheel_indices(self, model):
+        """Return the indices in qpos that correspond to wheel joints."""
+        wheel_indices = []
+        # Loop over all joints (the total number of joints is model.njnt)
+        for i in range(model.njnt):
+            # Get the joint name using mj_id2name; constant mjOBJ_JOINT specifies a joint
+            joint_name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_JOINT, i)
+            if joint_name is not None and "wheel" in joint_name.lower():
+                start = model.jnt_qposadr[i]
+                dof = self.get_joint_dof(model, i)
+                wheel_indices.extend(range(start, start + dof))
+        return sorted(wheel_indices)
+
+    def get_wheel_actuator_indices(self, model):
+        """
+        Return the indices in the control vector (data.ctrl) that correspond to wheel actuators.
+        
+        Assumes each actuator produces one control signal.
+        """
+        wheel_indices = []
+        # Use model.nu (number of actuators) instead of model.nactuator
+        for i in range(model.nu):
+            actuator_name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_ACTUATOR, i)
+            if actuator_name is not None and "wheel" in actuator_name.lower():
+                wheel_indices.append(i)
+        return sorted(wheel_indices)
+
     def run(self):
         tqdm_range = tqdm.tqdm(range(self.T-1))
+
+        # reduce the state to wheels
+        wheel_pos_indices = self.get_wheel_indices(self.model)
+        wheel_velo_indices = [x - 1 for x in wheel_pos_indices]
+        wheel_actuator_indices = self.get_wheel_actuator_indices(self.model)
+        print("Wheel indices: ", wheel_pos_indices)
+        print("Wheel actuator indices: ", wheel_actuator_indices)
         for t in tqdm_range:
             self.t = t
             mujoco.mj_forward(self.model, self.data) # update the state with dynamics
@@ -145,8 +188,24 @@ class Simulator:
 
             if self.agent is not None: 
                 if t % self.update_ratio == 0:
-                    action = self.agent.update(np.concatenate([self.data.qpos, self.data.qvel], axis=0)) # compute new action based on the state
-                self.data.ctrl = action # apply the action to the model
+
+                    q_curr = cp.deepcopy(self.data.qpos) # save reference pose
+                    v_curr = cp.deepcopy(self.data.qvel) # save reference pose
+                    # q_curr = self.data.qpos
+                    # v_curr = self.data.qvel
+                    q_curr_reduced = np.delete(q_curr, wheel_pos_indices)
+                    v_curr_reduced = np.delete(v_curr, wheel_velo_indices)
+                    
+                    x = np.concatenate([q_curr_reduced, v_curr_reduced], axis=0)
+                    
+
+                    # action = self.agent.update(np.concatenate([self.data.qpos, self.data.qvel], axis=0)) # compute new action based on the state
+                    action = self.agent.update(x)
+                    new_action = np.zeros(len(self.data.ctrl))
+                    new_action[0:len(action)] = action
+
+                # self.data.ctrl = action # apply the action to the model
+                self.data.ctrl = new_action
 
             mujoco.mj_step(self.model, self.data)  # advance the simulation??
             mujoco.mj_forward(self.model, self.data) # update the state with dynamics
