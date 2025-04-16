@@ -1,4 +1,4 @@
-Metadata-Version: 2.2
+Metadata-Version: 2.4
 Name: real_time_whole_body_mppi
 Version: 0.1.0
 Summary: A Python package for MPPI-based controllers for quadrupeds
@@ -20,6 +20,7 @@ Dynamic: author
 Dynamic: author-email
 Dynamic: classifier
 Dynamic: home-page
+Dynamic: license-file
 Dynamic: requires-dist
 Dynamic: requires-python
 Dynamic: summary

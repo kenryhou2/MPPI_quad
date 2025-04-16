@@ -79,7 +79,8 @@ def main():
     #subtract 1 from wheel_pos_indices to get the corresponding velocity indices
     wheel_velo_indices = [x - 1 for x in wheel_pos_indices]
 
-    
+    print(wheel_pos_indices)
+    print(wheel_velo_indices)
 
     dt_sim = 0.01
     model_sim.opt.timestep = dt_sim
@@ -117,7 +118,7 @@ def main():
     # x = np.concatenate([q_curr, v_curr])
     x = np.concatenate([q_curr_reduced, v_curr_reduced])
     # Set simulation time
-    tfinal = 8 # 14 for stairs, 30 for walk_octagon
+    tfinal = 4 # 14 for stairs, 30 for walk_octagon
     tvec = np.linspace(0,tfinal,int(np.ceil(tfinal/dt_sim))+1)
     mujoco.mj_resetDataKeyframe(model_sim, data_sim, 1)
     mujoco.mj_forward(model_sim, data_sim)

@@ -1,4 +1,4 @@
-<mujoco model="Quadruped Go1">
+<mujoco model="Quadruped Go2">
   <include file="../common.xml"/>
 
   <size memory="1M"/>
@@ -64,6 +64,10 @@
     <general class="abduction" name="RL_hip" joint="RL_hip_joint"/>
     <general class="hip" name="RL_thigh" joint="RL_thigh_joint"/>
     <general class="knee" name="RL_calf" joint="RL_calf_joint"/>
+    <motor name="FL_wheel_motor" joint="FL_wheel_joint" gear="1" ctrllimited="true" ctrlrange="-10 10"/>
+    <motor name="FR_wheel_motor" joint="FR_wheel_joint" gear="1" ctrllimited="true" ctrlrange="-10 10"/>
+    <motor name="RL_wheel_motor" joint="RL_wheel_joint" gear="1" ctrllimited="true" ctrlrange="-10 10"/>
+    <motor name="RR_wheel_motor" joint="RR_wheel_joint" gear="1" ctrllimited="true" ctrlrange="-10 10"/>
   </actuator>
   <!-- <actuator>
         <motor name="FL_hip"    gear="1" joint="FL_hip_joint"   ctrllimited="true" ctrlrange="-33.5 33.5"/>
@@ -87,8 +91,8 @@
     <framepos name="RR_pos" objtype="site" objname="RR" />
     <framepos name="RL_pos" objtype="site" objname="RL" /> -->
 
-    <framepos name="torso_pos" objtype="xbody" objname="trunk" />
-    <framequat name="torso_quat" objtype="xbody" objname="trunk" />
+    <framepos name="torso_pos" objtype="xbody" objname="base_link" />
+    <framequat name="torso_quat" objtype="xbody" objname="base_link" />
 
     <jointpos name="pos_FR_hip_joint" joint="FR_hip_joint" />
     <jointpos name="pos_FR_thigh_joint" joint="FR_thigh_joint" />
@@ -119,32 +123,38 @@
                0 0.9 -1.8 
                0 0.9 -1.8 
                0 0.9 -1.8 
-               0 0.9 -1.8"
+               0 0.9 -1.8
+               0 0 0 0"
       ctrl="0 0.9 -1.8 
             0 0.9 -1.8 
             0 0.9 -1.8 
-            0 0.9 -1.8"/>
+            0 0.9 -1.8
+            0 0 0 0"/>
     <key name="sit" 
       qpos="0 0 0.08 
             1 0 0 0 
             0.073 1.34 -2.83 
             0.073 1.34 -2.83 
             0.073 1.34 -2.83 
-            0.073 1.34 -2.83"
+            0.073 1.34 -2.83
+            0 0 0 0"
       ctrl="0.073 1.34 -2.83 
             0.073 1.34 -2.83 
             0.073 1.34 -2.83 
-            0.073 1.34 -2.83"/>
+            0.073 1.34 -2.83
+            0 0 0 0"/>
     <key name="tune" 
       qpos="0 0 0.08 
             1 0 0 0 
             -0.1 1.34 -2.83 
             0.1 1.34 -2.83 
             -0.1 1.34 -2.83 
-            0.1 1.34 -2.83"
+            0.1 1.34 -2.83
+            0 0 0 0"
       ctrl="-0.1 1.34 -2.83 
             0.1 1.34 -2.83 
             -0.1 1.34 -2.83 
-            0.1 1.34 -2.83"/>
+            0.1 1.34 -2.83
+            0 0 0 0"/>
   </keyframe>
 </mujoco>

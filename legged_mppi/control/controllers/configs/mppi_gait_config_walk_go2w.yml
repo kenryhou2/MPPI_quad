@@ -5,10 +5,10 @@
 # MPPI Parameters
 # These control the behavior of the Model Predictive Path Integral optimization.
 dt: 0.01          # Time step size for simulation (in seconds).
-n_samples: 30     # Number of trajectory samples per iteration.
+n_samples: 10     # Number of trajectory samples per iteration.
 lambda: 0.1       # Temperature parameter for trajectory cost weighting.
-horizon: 40       # Prediction horizon (number of time steps).
-n_workers: 5      # Number of parallel workers for optimization.
+horizon: 20       # Prediction horizon (number of time steps).
+n_workers: 5      # Number of parallel workers for optimization.d
 seed: 42          # Random seed for reproducibility.
 
 # ============================
@@ -29,18 +29,22 @@ n_knots: 4          # Number of control points (knots) in the spline.
 # ============================
 # Noise standard deviations applied to control inputs for exploration.
 noise_sigma:
-  - 0.06 # Hip joint (Front Right - FR)
-  - 0.1  # Thigh joint (FR)
-  - 0.1  # Calf joint (FR)
-  - 0.06 # Hip joint (Front Left - FL)
-  - 0.1  # Thigh joint (FL)
-  - 0.1  # Calf joint (FL)
-  - 0.06 # Hip joint (Rear Right - RR)
-  - 0.1  # Thigh joint (RR)
-  - 0.1  # Calf joint (RR)
-  - 0.06 # Hip joint (Rear Left - RL)
-  - 0.1  # Thigh joint (RL)
-  - 0.1  # Calf joint (RL)
+  - 0.06  # Hip joint (FR)
+  - 0.1   # Thigh joint (FR)
+  - 0.1   # Calf joint (FR)
+  - 0.06  # Hip joint (FL)
+  - 0.1   # Thigh joint (FL)
+  - 0.1   # Calf joint (FL)
+  - 0.06  # Hip joint (RR)
+  - 0.1   # Thigh joint (RR)
+  - 0.1   # Calf joint (RR)
+  - 0.06  # Hip joint (RL)
+  - 0.1   # Thigh joint (RL)
+  - 0.1   # Calf joint (RL)
+  - 0.2   # Wheel joint (FR)
+  - 0.2   # Wheel joint (FL)
+  - 0.2   # Wheel joint (RR)
+  - 0.2   # Wheel joint (RL)
 
 # ============================
 # Cost Function Parameters
@@ -92,15 +96,19 @@ Q_diag:
 # ============================
 # Penalizes excessive control effort (torque commands).
 R_diag:
-  - 0.001 # Hip joint (FR)
-  - 0.001 # Thigh joint (FR)
-  - 0.001 # Calf joint (FR)
-  - 0.001 # Hip joint (FL)
-  - 0.001 # Thigh joint (FL)
-  - 0.001 # Calf joint (FL)
-  - 0.001 # Hip joint (RR)
-  - 0.001 # Thigh joint (RR)
-  - 0.001 # Calf joint (RR)
-  - 0.001 # Hip joint (RL)
-  - 0.001 # Thigh joint (RL)
-  - 0.001 # Calf joint (RL)
+  - 0.001  # Hip joint (FR)
+  - 0.001  # Thigh joint (FR)
+  - 0.001  # Calf joint (FR)
+  - 0.001  # Hip joint (FL)
+  - 0.001  # Thigh joint (FL)
+  - 0.001  # Calf joint (FL)
+  - 0.001  # Hip joint (RR)
+  - 0.001  # Thigh joint (RR)
+  - 0.001  # Calf joint (RR)
+  - 0.001  # Hip joint (RL)
+  - 0.001  # Thigh joint (RL)
+  - 0.001  # Calf joint (RL)
+  - 0.001  # Wheel joint (FR)
+  - 0.001  # Wheel joint (FL)
+  - 0.001  # Wheel joint (RR)
+  - 0.001  # Wheel joint (RL)

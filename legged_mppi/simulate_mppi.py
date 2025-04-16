@@ -36,7 +36,7 @@ def main(task):
 
 if __name__ == "__main__":
     # Define valid tasks
-    VALID_TASKS = ['stairs', 'walk_octagon', 'walk_straight', 'big_box']
+    VALID_TASKS = ['stairs', 'walk_octagon', 'walk_straight', 'big_box', 'roll_straight']
 
     # Parse arguments
     parser = argparse.ArgumentParser(description="Run simulation with a specified task.")

@@ -18,6 +18,10 @@ DEFAULT_CONFIG_PATH = 'configs/mppi_gait_config_walk.yml'
 DEFAULT_SIM_PATH = 'models/go1/go1_scene_mppi.xml'
 DEFAULT_ORIENTATION = [[1, 0, 0, 0]]
 
+WHEELED_MODEL_PATH = 'models/go2w/go2_scene_mppi.xml'
+WHEELED_CONFIG_PATH = 'configs/mppi_gait_config_walk_go2w.yml'
+WHEELED_SIM_PATH = 'models/go2w/go2_scene_mppi.xml'
+
 
 TASKS = {
     "walk_straight": {
@@ -42,6 +46,29 @@ TASKS = {
         "config_path": DEFAULT_CONFIG_PATH,
         "sim_path": DEFAULT_SIM_PATH
     },
+    "roll_straight": {
+        "goal_pos": [
+                     [0, 0, 0.27], 
+                     [1, 0, 0.27], 
+                     [1, 0, 0.27]],
+        "default_orientation": DEFAULT_ORIENTATION,
+        "cmd_vel": [[0.0, 0.0], 
+                    [0.2, 0.0], 
+                    [0.0, 0.0]],
+        "goal_thresh": [0.2, 
+                        0.2, 
+                        0.2],
+        "desired_gait": ['in_place', 
+                         'in_place', 
+                         'in_place'],
+        "waiting_times": [0, 
+                          0, 
+                          0],
+        "model_path": WHEELED_MODEL_PATH,
+        "config_path": WHEELED_CONFIG_PATH,
+        "sim_path": WHEELED_SIM_PATH
+    },
+
     "walk_octagon": {
         "goal_pos": [[0, 0, 0.27], 
                      [1, 0, 0.27], 

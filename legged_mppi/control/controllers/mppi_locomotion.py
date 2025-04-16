@@ -126,9 +126,9 @@ class MPPI(BaseMPPI):
 
         if not self.task_success:
             if self.desired_gait[self.goal_index] in ['in_place', 'walk', 'walk_fast']:
-                self.noise_sigma = np.array([0.06, 0.1, 0.1] * 4)
+                self.noise_sigma = np.array([0.06, 0.1, 0.1] * 4+ [0.2]*4)
             elif self.desired_gait[self.goal_index] in ['trot']:
-                self.noise_sigma = np.array([0.06, 0.2, 0.2] * 4)
+                self.noise_sigma = np.array([0.06, 0.2, 0.2] * 4+ [0.2]*4)
         
     def update(self, obs):
         """
@@ -221,7 +221,7 @@ class MPPI(BaseMPPI):
         kd = 3   # Derivative gain for joint velocity error
 
         # Compute state error relative to the reference
-        x_error = x - x_ref
+        x_error = x[:,:37] - x_ref
 
         # Compute quaternion distance for orientation error
         q_dist = self.quaternion_distance_np(x[:, 3:7], x_ref[:, 3:7])
@@ -232,8 +232,8 @@ class MPPI(BaseMPPI):
 
         # Compute joint and velocity errors
         x_joint = x[:, 7:19]
-        v_joint = x[:, 25:]
-        u_error = kp * (u - x_joint) - kd * v_joint
+        v_joint = x[:, 25:37]
+        u_error = kp * (u[:,:12] - x_joint) - kd * v_joint
 
         # Compute positional cost (L1 norm for positional error)
         x_error[:, :3] = 0  # Ignore positional error for simplicity
@@ -243,7 +243,7 @@ class MPPI(BaseMPPI):
         # Compute total cost
         cost = (
             np.einsum('ij,ik,jk->i', x_error, x_error, self.Q) +
-            np.einsum('ij,ik,jk->i', u_error, u_error, self.R) +
+            np.einsum('ij,ik,jk->i', u_error, u_error, self.R[:12, :12]) +
             L1_norm_pos_cost
         )
         return cost

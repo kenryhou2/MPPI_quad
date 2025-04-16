@@ -39,7 +39,7 @@ class BaseMPPI:
         self.n_samples = params['n_samples']
         self.noise_sigma = np.array(params['noise_sigma'])
         self.num_workers = params['n_workers']
-        self.sampling_init = np.array([-0.3, 1.34, -2.83, 0.3, 1.34, -2.83] * 2)
+        self.sampling_init = np.array([-0.3, 1.34, -2.83, 0.3, 1.34, -2.83] * 2 + [0.0]*4)
 
         # Initialize rollouts and sampling configurations
         self.h = params['dt']
@@ -60,9 +60,9 @@ class BaseMPPI:
         self.selected_trajectory = None
 
         # Action limits
-        self.act_dim = 12
-        self.act_max = np.array([0.863, 4.501, -0.888] * 4)
-        self.act_min = np.array([-0.863, -0.686, -2.818] * 4)
+        self.act_dim = 16
+        self.act_max = np.array([0.863, 4.501, -0.888] * 4 + [0.0] * 4)
+        self.act_min = np.array([-0.863, -0.686, -2.818] * 4 + [0.0] * 4)
 
     def reset_planner(self):
         """Reset the action planner to its initial state."""
