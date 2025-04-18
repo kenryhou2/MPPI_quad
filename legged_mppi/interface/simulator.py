@@ -57,9 +57,9 @@ class Simulator:
         self.save_dir = save_dir
         # rollout
         mujoco.mj_resetData(self.model, self.data)
-        self.data.qpos = self.model.key_qpos[1]
-        self.data.qvel = self.model.key_qvel[1]
-        self.data.ctrl = self.model.key_ctrl[1]
+        self.data.qpos = self.model.key_qpos[0]
+        self.data.qvel = self.model.key_qvel[0]
+        self.data.ctrl = self.model.key_ctrl[0]
 
         # turn off gravity
         if not gravity:
@@ -142,6 +142,7 @@ class Simulator:
             mujoco.mj_forward(self.model, self.data) # update the state with dynamics
             self.store_trajectory(t)
             self.ctrl[:, t] = self.data.ctrl # store the control
+            #print("vel ctrl:", self.data.ctrl[-4:])
 
             if self.agent is not None: 
                 if t % self.update_ratio == 0:

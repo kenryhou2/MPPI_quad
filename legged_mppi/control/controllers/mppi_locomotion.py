@@ -19,7 +19,7 @@ GAIT_INPLACE_PATH = os.path.join(GAIT_DIR, "FAST/walking_gait_raibert_FAST_0_0_1
 GAIT_TROT_PATH = os.path.join(GAIT_DIR, "MED/walking_gait_raibert_MED_0_5_15cm_100hz.tsv")
 GAIT_WALK_PATH = os.path.join(GAIT_DIR, "MED/walking_gait_raibert_MED_0_1_10cm_100hz.tsv")
 GAIT_WALK_FAST_PATH = os.path.join(GAIT_DIR, "FAST/walking_gait_raibert_FAST_0_1_10cm_100hz.tsv")
-
+GAIT_WHEELED = os.path.join(GAIT_DIR, "WHEELED/in_place.tsv")
 class MPPI(BaseMPPI):
     """
     Model Predictive Path Integral (MPPI) Controller for quadruped robots.
@@ -78,7 +78,8 @@ class MPPI(BaseMPPI):
             'in_place': GaitScheduler(gait_path=GAIT_INPLACE_PATH, name='in_place'),
             'trot': GaitScheduler(gait_path=GAIT_TROT_PATH, name='trot'),
             'walk': GaitScheduler(gait_path=GAIT_WALK_PATH, name='walk'),
-            'walk_fast': GaitScheduler(gait_path=GAIT_WALK_FAST_PATH, name='walk_fast')
+            'walk_fast': GaitScheduler(gait_path=GAIT_WALK_FAST_PATH, name='walk_fast'),
+            "wheeled": GaitScheduler(gait_path=GAIT_WHEELED, name = 'wheeled')
         }
         self.gait_scheduler = self.gaits['in_place']
 
@@ -126,9 +127,9 @@ class MPPI(BaseMPPI):
 
         if not self.task_success:
             if self.desired_gait[self.goal_index] in ['in_place', 'walk', 'walk_fast']:
-                self.noise_sigma = np.array([0.06, 0.1, 0.1] * 4+ [0.2]*4)
+                self.noise_sigma = np.array([0.06, 0.4, 0.4] * 4+ [0.2]*4)
             elif self.desired_gait[self.goal_index] in ['trot']:
-                self.noise_sigma = np.array([0.06, 0.2, 0.2] * 4+ [0.2]*4)
+                self.noise_sigma = np.array([0.06, 0.1, 0.1] * 4+ [0.2]*4)
         
     def update(self, obs):
         """

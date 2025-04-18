@@ -7,11 +7,13 @@
     <default class="go2">
       <geom friction="0.4" margin="0.001" condim="1" />
       <joint axis="0 1 0" damping="0.1" armature="0.01" frictionloss="0.2" />
-      <motor ctrlrange="-23.7 23.7" />
+      <general forcerange="-63.7 63.7" biastype="affine" gainprm="55 0 0 0 0 0 0 0 0 0" biasprm="0 -55 -3 0 0 0 0 0 0 0"/>
       <default class="abduction">
-        <joint axis="1 0 0" range="-1.0472 1.0472" />
+        <joint axis="1 0 0" damping="1" range="-0.863 0.863"/>
+        <general ctrlrange="-0.863 0.863"/>
       </default>
       <default class="hip">
+        <general ctrlrange="-10.686 14.501"/>
         <default class="front_hip">
           <joint range="-1.5708 3.4907" />
         </default>
@@ -20,8 +22,8 @@
         </default>
       </default>
       <default class="knee">
-        <joint range="-2.7227 -0.83776" />
-        <motor ctrlrange="-45.43 45.43" />
+        <joint range="-2.818 -0.888"/>
+        <general ctrlrange="-2.818 -0.888" forcerange="-15.55 15.55"/>
       </default>
       <default class="visual">
         <geom type="mesh" contype="0" conaffinity="0" group="2" />
@@ -30,7 +32,7 @@
         <geom group="3" />
         <default class="foot">
           <geom size="0.022" pos="-0.002 0 -0.2264" priority="1" condim="6"
-            friction="0.8 0.02 0.01" />
+            friction="0.0 1.0 1.0" />
         </default>
       </default>
     </default>

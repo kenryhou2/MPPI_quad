@@ -64,10 +64,10 @@
     <general class="abduction" name="RL_hip" joint="RL_hip_joint"/>
     <general class="hip" name="RL_thigh" joint="RL_thigh_joint"/>
     <general class="knee" name="RL_calf" joint="RL_calf_joint"/>
-    <motor name="FL_wheel_motor" joint="FL_wheel_joint" gear="1" ctrllimited="true" ctrlrange="-10 10"/>
-    <motor name="FR_wheel_motor" joint="FR_wheel_joint" gear="1" ctrllimited="true" ctrlrange="-10 10"/>
-    <motor name="RL_wheel_motor" joint="RL_wheel_joint" gear="1" ctrllimited="true" ctrlrange="-10 10"/>
-    <motor name="RR_wheel_motor" joint="RR_wheel_joint" gear="1" ctrllimited="true" ctrlrange="-10 10"/>
+    <velocity name="FL_wheel" joint="FL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
+    <velocity name="FR_wheel" joint="FR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
+    <velocity name="RL_wheel" joint="RL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
+    <velocity name="RR_wheel" joint="RR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
   </actuator>
   <!-- <actuator>
         <motor name="FL_hip"    gear="1" joint="FL_hip_joint"   ctrllimited="true" ctrlrange="-33.5 33.5"/>
@@ -118,17 +118,17 @@
 
   <keyframe>
     <key name="home" 
-         qpos="0 0 2 
+         qpos="0 0 0.45
                1 0 0 0 
-               0 0.9 -1.8 
-               0 0.9 -1.8 
-               0 0.9 -1.8 
-               0 0.9 -1.8
+               -0.3 1.34 -2.83
+               -0.3 -1.34 -2.83 
+               -0.3 1.34 -2.83
+               -0.3 -1.34 -2.83
                0 0 0 0"
-      ctrl="0 0 0
-            0 0 0 
-            0 0 0 
-            0 0 0
+      ctrl="0 0.9 -1.8 
+            0 0.9 -1.8 
+            0 0.9 -1.8 
+            0 0.9 -1.8
             0 0 0 0"/>
     <key name="sit" 
       qpos="0 0 0.45 

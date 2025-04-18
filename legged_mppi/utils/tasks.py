@@ -47,23 +47,23 @@ TASKS = {
         "sim_path": DEFAULT_SIM_PATH
     },
     "roll_straight": {
-        "goal_pos": [
-                     [0, 0, 0.27], 
+        "goal_pos": [[0, 0, 0.27], 
                      [1, 0, 0.27], 
-                     [1, 0, 0.27]],
+                     [2, 1, 0.27], 
+                     [2, 2, 0.27],
+                     [1, 3, 0.27], 
+                     [0, 3, 0.27], 
+                     [-1, 2, 0.27], 
+                     [-1, 1, 0.27],
+                     [0, 0, 0.27], 
+                     [0, 0, 0.27]],
         "default_orientation": DEFAULT_ORIENTATION,
-        "cmd_vel": [[0.0, 0.0], 
-                    [0.2, 0.0], 
-                    [0.0, 0.0]],
-        "goal_thresh": [0.2, 
-                        0.2, 
-                        0.2],
-        "desired_gait": ['in_place', 
-                         'in_place', 
-                         'in_place'],
-        "waiting_times": [0, 
-                          0, 
-                          0],
+        "cmd_vel": [[0.0, 0.0]] + [[0.2, 0.0]] * 8 + [[0.0, 0.0]],
+        "goal_thresh": [0.2] * 10,
+        "desired_gait": ['wheeled'] + 
+                        ['wheeled'] * 8 + 
+                        ['wheeled'],
+        "waiting_times": [0] * 10,
         "model_path": WHEELED_MODEL_PATH,
         "config_path": WHEELED_CONFIG_PATH,
         "sim_path": WHEELED_SIM_PATH

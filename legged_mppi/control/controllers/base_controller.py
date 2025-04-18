@@ -61,8 +61,8 @@ class BaseMPPI:
 
         # Action limits
         self.act_dim = 16
-        self.act_max = np.array([0.863, 4.501, -0.888] * 4 + [0.0] * 4)
-        self.act_min = np.array([-0.863, -0.686, -2.818] * 4 + [0.0] * 4)
+        self.act_max = np.array([0.863, 4.501, -0.888] * 4 + [5.0] * 4)
+        self.act_min = np.array([-0.863, -0.686, -2.818] * 4 + [-5.0] * 4)
 
     def reset_planner(self):
         """Reset the action planner to its initial state."""
