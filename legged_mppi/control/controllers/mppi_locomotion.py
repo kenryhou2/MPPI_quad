@@ -89,7 +89,7 @@ class MPPI(BaseMPPI):
         self.body_ref = np.concatenate((self.goal_pos[self.goal_index],
                                         self.goal_ori[self.goal_index],
                                         self.cmd_vel[self.goal_index],
-                                        np.zeros(4)))
+                                        np.zeros(4))) 
         
         self.gait_scheduler = self.gaits[self.desired_gait[self.goal_index]]
         self.task_success = False

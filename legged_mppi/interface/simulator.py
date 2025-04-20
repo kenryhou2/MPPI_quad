@@ -151,7 +151,11 @@ class Simulator:
                 
                 #set actions except for the last 4 to zero
                 action[0:len(action)-4] = 0
-                action[self.hip_indices] = 0.4
+                action[self.hip_indices] = 0.6
+                #set the last 4 actions to the computed action
+                action[-4:] = 5
+                
+                # print("action:", action[-4:])
                 
                 self.data.ctrl = action # apply the action to the model
 
