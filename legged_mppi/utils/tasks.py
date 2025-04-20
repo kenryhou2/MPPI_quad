@@ -60,9 +60,12 @@ TASKS = {
         "default_orientation": DEFAULT_ORIENTATION,
         "cmd_vel": [[0.0, 0.0]] + [[0.2, 0.0]] * 8 + [[0.0, 0.0]],
         "goal_thresh": [0.2] * 10,
-        "desired_gait": ['wheeled'] + 
-                        ['wheeled'] * 8 + 
-                        ['wheeled'],
+        # "desired_gait": ['wheeled'] + 
+        #                 ['wheeled'] * 8 + 
+        #                 ['wheeled'],
+        "desired_gait": ['in_place', 
+                         'walk_fast', 
+                         'in_place'],
         "waiting_times": [0] * 10,
         "model_path": WHEELED_MODEL_PATH,
         "config_path": WHEELED_CONFIG_PATH,

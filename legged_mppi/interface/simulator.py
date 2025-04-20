@@ -81,6 +81,7 @@ class Simulator:
         self.noisy_sensordata = np.zeros((self.model.nsensordata, self.T))
         self.time = np.zeros(self.T)
         self.cost = np.zeros((1, self.T))
+        self.hip_indices = [1, 4, 7, 10] # hip indices
 
         # Ensure the directory exists
         if self.save_frames and not os.path.exists(self.save_dir):
@@ -147,6 +148,11 @@ class Simulator:
             if self.agent is not None: 
                 if t % self.update_ratio == 0:
                     action = self.agent.update(np.concatenate([self.data.qpos, self.data.qvel], axis=0)) # compute new action based on the state
+                
+                #set actions except for the last 4 to zero
+                action[0:len(action)-4] = 0
+                action[self.hip_indices] = 0.4
+                
                 self.data.ctrl = action # apply the action to the model
 
             mujoco.mj_step(self.model, self.data)  # advance the simulation??

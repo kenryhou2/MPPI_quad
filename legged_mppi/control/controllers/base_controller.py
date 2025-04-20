@@ -39,7 +39,14 @@ class BaseMPPI:
         self.n_samples = params['n_samples']
         self.noise_sigma = np.array(params['noise_sigma'])
         self.num_workers = params['n_workers']
-        self.sampling_init = np.array([-0.3, 1.34, -2.83, 0.3, 1.34, -2.83] * 2 + [0.0]*4)
+        # self.sampling_init = np.array([-0.3, 1.34, -2.83,  # FL_hip, FL_thigh, FL_calf
+        #                                 0.3, 1.34, -2.83]  # FR_hip, FR_thigh, FR_calf
+        #                                 * 2                 # repeat for RL and RR
+        #                                 + [0.0]*4)          # zero for the 4 wheel actuators
+        self.sampling_init = np.array([0, 0, 0,  # FL_hip, FL_thigh, FL_calf # joint angles (radians)
+                                        0, 0, 0]  # FR_hip, FR_thigh, FR_calf
+                                        * 2                 # repeat for RL and RR
+                                        + [0.0]*4)          # zero for the 4 wheel actuators
 
         # Initialize rollouts and sampling configurations
         self.h = params['dt']
