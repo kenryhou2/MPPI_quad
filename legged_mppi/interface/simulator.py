@@ -82,6 +82,8 @@ class Simulator:
         self.time = np.zeros(self.T)
         self.cost = np.zeros((1, self.T))
         self.hip_indices = [1, 4, 7, 10] # hip indices
+        self.abductor_indices = [0, 3, 6, 9] # abductor indices
+        self.new_action = np.zeros(self.model.nu)
 
         # Ensure the directory exists
         if self.save_frames and not os.path.exists(self.save_dir):
@@ -150,14 +152,16 @@ class Simulator:
                     action = self.agent.update(np.concatenate([self.data.qpos, self.data.qvel], axis=0)) # compute new action based on the state
                 
                 #set actions except for the last 4 to zero
-                action[0:len(action)-4] = 0
-                action[self.hip_indices] = 0.6
+                self.new_action[0:len(action)-4] = 0
+                self.new_action[self.hip_indices] = 0.6
                 #set the last 4 actions to the computed action
-                action[-4:] = 5
+                self.new_action[-4:] = 3
+
+                # self.new_action[self.abductor_indices] = action[self.abductor_indices] # set the abductor actions
                 
                 # print("action:", action[-4:])
                 
-                self.data.ctrl = action # apply the action to the model
+                self.data.ctrl = self.new_action # apply the action to the model
 
             mujoco.mj_step(self.model, self.data)  # advance the simulation??
             mujoco.mj_forward(self.model, self.data) # update the state with dynamics
