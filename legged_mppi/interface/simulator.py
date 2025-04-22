@@ -151,18 +151,20 @@ class Simulator:
                 if t % self.update_ratio == 0:
                     action = self.agent.update(np.concatenate([self.data.qpos, self.data.qvel], axis=0)) # compute new action based on the state
                 
+                #Copy the action to the new action
+                self.new_action = action
                 #set actions except for the last 4 to zero
                 # self.new_action[0:len(action)-4] = 0
                 # self.new_action[self.hip_indices] = 0.5
-                #set the last 4 actions to the computed action
-                self.new_action = action
+                
 
-                #set wheel velocities
-                self.new_action[-4:] = 0
+                #set wheel velocities hardcoded
+                # self.new_action[-4:] = 0
 
                 # self.new_action[self.abductor_indices] = action[self.abductor_indices] # set the abductor actions
                 
-                # print("action:", action[-4:])
+                #print last 4 actions (wheel velocities)
+                print("Wheeled velo action:", self.new_action[-4:])
                 
                 self.data.ctrl = self.new_action # apply the action to the model
 

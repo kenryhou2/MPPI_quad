@@ -90,10 +90,10 @@ Q_diag:
   - 0.1    # Hip joint velocity (RL)
   - 0.1    # Thigh joint velocity (RL)
   - 0.1    # Calf joint velocity (RL)
-  # - 0.5   # Wheel joint velocity (FR)
-  # - 0.5   # Wheel joint velocity (FL)
-  # - 0.5   # Wheel joint velocity (RR)
-  # - 0.5   # Wheel joint velocity (RL)
+  - 10   # Wheel joint velocity (FR)
+  - 10   # Wheel joint velocity (FL)
+  - 10   # Wheel joint velocity (RR)
+  - 10   # Wheel joint velocity (RL)
 
   #size: 37x37 without wheels
   #size: 41x41 with wheel velocity

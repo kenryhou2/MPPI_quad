@@ -89,9 +89,8 @@ class MPPI(BaseMPPI):
         self.body_ref = np.concatenate((self.goal_pos[self.goal_index],
                                         self.goal_ori[self.goal_index],
                                         self.cmd_vel[self.goal_index],
-                                        np.zeros(4))) # vz=0, ωx=0, ωy=0, ωz=0
-                                        # np.zeros(4), 
-                                        # np.ones(4))) # wheel_vel_ref (e.g. 1 rad/s)
+                                        np.zeros(4), # vz=0, ωx=0, ωy=0, ωz=0
+                                        4*np.ones(4))) # wheel_vel_ref (e.g. 4 rad/s)
                                         
         
         self.gait_scheduler = self.gaits[self.desired_gait[self.goal_index]]
@@ -232,21 +231,19 @@ class MPPI(BaseMPPI):
             np.ndarray: Computed cost for each sample.
         """
         # kp = 50  # Proportional gain for joint error
-        kp = 90
-        kd = 3   # Derivative gain for joint velocity error
+        # kd = 3   # Derivative gain for joint velocity error
+        kp = 82
+        kd = 12  
 
         # Compute state error relative to the reference
         
-        #parse correct states:
-        legged_x = x[:, self.state_legged_robot]
-        
-        x_error = legged_x - x_ref
+        #parse correct states (Legged only):
+        # legged_x = x[:, self.state_legged_robot]
+        # x_error = legged_x - x_ref
 
-        # legged_and_wheeled_velo_idx = self.state_legged_robot + self.state_wheel_velo_idx
-        # legged_and_wheeled_velo_x = x[:, legged_and_wheeled_velo_idx]
-        # x_error = legged_and_wheeled_velo_x
-        # x_error = x[:,:37] - x_ref
-        # x_error = x[:, :41] -x_ref
+        legged_and_wheeled_velo_idx = self.state_legged_robot + self.state_wheel_velo_idx
+        legged_and_wheeled_velo_x = x[:, legged_and_wheeled_velo_idx]
+        x_error = legged_and_wheeled_velo_x - x_ref #should have dim 41
 
         # Compute quaternion distance for orientation error
         q_dist = self.quaternion_distance_np(x[:, 3:7], x_ref[:, 3:7])
@@ -302,11 +299,11 @@ class MPPI(BaseMPPI):
         joints_ref = np.tile(joints_ref, (num_samples, 1, 1))
         joints_ref = joints_ref.reshape(-1, joints_ref.shape[2])
 
-        # wheel_velo_ref = traj_body_ref[:, 13:]
+        wheel_velo_ref = traj_body_ref[:, 13:] #predefined wheel velocity reference from body_ref
         # Concatenate body and joint references for full reference state
         x_ref = np.concatenate(
-            [traj_body_ref[:, :7], joints_ref[:, :12], traj_body_ref[:, 7:], joints_ref[:, 12:]], #legged
-            # [traj_body_ref[:, :7], joints_ref[:, :12], traj_body_ref[:, 7:13], joints_ref[:, 12:], wheel_velo_ref],
+            # [traj_body_ref[:, :7], joints_ref[:, :12], traj_body_ref[:, 7:], joints_ref[:, 12:]], #legged
+            [traj_body_ref[:, :7], joints_ref[:, :12], traj_body_ref[:, 7:13], joints_ref[:, 12:], wheel_velo_ref], #legged and wheeled
             axis=1
         )
 

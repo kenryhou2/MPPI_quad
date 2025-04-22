@@ -14,7 +14,7 @@ def main(task):
     CTRL_UPDATE_RATE = 100
     CTRL_HORIZON = 40
     CTRL_LAMBDA = 0.1
-    CTRL_N_SAMPLES = 30
+    CTRL_N_SAMPLES = 20
 
     # Soft contact model paramters
     TIMECONST = 0.02
