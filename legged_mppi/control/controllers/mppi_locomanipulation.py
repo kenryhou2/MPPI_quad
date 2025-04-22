@@ -198,7 +198,8 @@ class MPPI_box_push(BaseMPPI):
         return (1 - np.abs(dot_products)).reshape(-1, 1)
 
     def quadruped_cost_np(self, x_robot, x_box, u, x_robot_ref, x_box_ref):
-        kp = 50
+        # kp = 50
+        kp = 70
         kd = 3
         
         # ROBOT COST

@@ -20,6 +20,7 @@ def main(task):
     TIMECONST = 0.02
     DAMPINGRATIO = 1.0
     
+    
     # Get task data
     task_data = get_task(task)
     sim_path = task_data["sim_path"]

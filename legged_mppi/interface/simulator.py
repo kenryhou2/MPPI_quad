@@ -152,10 +152,13 @@ class Simulator:
                     action = self.agent.update(np.concatenate([self.data.qpos, self.data.qvel], axis=0)) # compute new action based on the state
                 
                 #set actions except for the last 4 to zero
-                self.new_action[0:len(action)-4] = 0
-                self.new_action[self.hip_indices] = 0.6
+                # self.new_action[0:len(action)-4] = 0
+                # self.new_action[self.hip_indices] = 0.5
                 #set the last 4 actions to the computed action
-                self.new_action[-4:] = 3
+                self.new_action = action
+
+                #set wheel velocities
+                self.new_action[-4:] = 0
 
                 # self.new_action[self.abductor_indices] = action[self.abductor_indices] # set the abductor actions
                 

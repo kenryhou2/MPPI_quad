@@ -89,10 +89,23 @@ class MPPI(BaseMPPI):
         self.body_ref = np.concatenate((self.goal_pos[self.goal_index],
                                         self.goal_ori[self.goal_index],
                                         self.cmd_vel[self.goal_index],
-                                        np.zeros(4))) 
+                                        np.zeros(4))) # vz=0, ωx=0, ωy=0, ωz=0
+                                        # np.zeros(4), 
+                                        # np.ones(4))) # wheel_vel_ref (e.g. 1 rad/s)
+                                        
         
         self.gait_scheduler = self.gaits[self.desired_gait[self.goal_index]]
         self.task_success = False
+        self.state_pos_idx = [0, 1, 2]
+        self.state_quat_idx = [3, 4, 5, 6]
+        self.state_hip_angle_idx = [7, 10, 13, 16] # FL, FR, RL, RR
+        self.state_thigh_angle_idx = [8, 11, 14, 17]
+        self.state_calf_angle_idx = [9, 12, 15, 18]
+        self.state_wheel_angle_idx = [10, 14, 18, 22]
+        self.state_wheel_velo_idx = [32, 36, 40, 44]
+        state_dim = mujoco.mj_stateSize(self.model, mujoco.mjtState.mjSTATE_FULLPHYSICS.value)
+        self.state_dim = state_dim - 1
+        self.state_legged_robot = [i for i in range(self.state_dim) if i not in self.state_wheel_angle_idx and i not in self.state_wheel_velo_idx]
 
         # Debug information
         print(f"Initial goal {self.goal_index}: {self.goal_pos[self.goal_index] }")
@@ -218,11 +231,22 @@ class MPPI(BaseMPPI):
         Returns:
             np.ndarray: Computed cost for each sample.
         """
-        kp = 50  # Proportional gain for joint error
+        # kp = 50  # Proportional gain for joint error
+        kp = 90
         kd = 3   # Derivative gain for joint velocity error
 
         # Compute state error relative to the reference
-        x_error = x[:,:37] - x_ref
+        
+        #parse correct states:
+        legged_x = x[:, self.state_legged_robot]
+        
+        x_error = legged_x - x_ref
+
+        # legged_and_wheeled_velo_idx = self.state_legged_robot + self.state_wheel_velo_idx
+        # legged_and_wheeled_velo_x = x[:, legged_and_wheeled_velo_idx]
+        # x_error = legged_and_wheeled_velo_x
+        # x_error = x[:,:37] - x_ref
+        # x_error = x[:, :41] -x_ref
 
         # Compute quaternion distance for orientation error
         q_dist = self.quaternion_distance_np(x[:, 3:7], x_ref[:, 3:7])
@@ -263,12 +287,12 @@ class MPPI(BaseMPPI):
         Returns:
             np.ndarray: Total cost for each sample.
         """
-        num_samples = states.shape[0]
-        num_pairs = states.shape[1]
+        num_samples = states.shape[0] # number of samples 30
+        num_pairs = states.shape[1] # number of time steps 40
 
         # Repeat body reference for all samples and time steps
-        traj_body_ref = np.repeat(body_ref[np.newaxis, :], num_samples * num_pairs, axis=0)
-
+        traj_body_ref = np.repeat(body_ref[np.newaxis, :], num_samples * num_pairs, axis=0) # reference for all timesteps for each sample, note: contains body_ref which has zero padding for wheels.
+        # for traj_body_ref, rows are timesteps, columns are states.
         # Flatten states and actions for batch processing
         states = states.reshape(-1, states.shape[2])
         actions = actions.reshape(-1, actions.shape[2])
@@ -278,15 +302,17 @@ class MPPI(BaseMPPI):
         joints_ref = np.tile(joints_ref, (num_samples, 1, 1))
         joints_ref = joints_ref.reshape(-1, joints_ref.shape[2])
 
+        # wheel_velo_ref = traj_body_ref[:, 13:]
         # Concatenate body and joint references for full reference state
         x_ref = np.concatenate(
-            [traj_body_ref[:, :7], joints_ref[:, :12], traj_body_ref[:, 7:], joints_ref[:, 12:]],
+            [traj_body_ref[:, :7], joints_ref[:, :12], traj_body_ref[:, 7:], joints_ref[:, 12:]], #legged
+            # [traj_body_ref[:, :7], joints_ref[:, :12], traj_body_ref[:, 7:13], joints_ref[:, 12:], wheel_velo_ref],
             axis=1
         )
 
         # Rotate velocity vectors to the local frame
         rotated_ref = batch_world_to_local_velocity(states[:, 3:7], states[:, 19:22])
-        states[:, 19:22] = rotated_ref
+        states[:, 19:22] = rotated_ref #note, 22 is exclusive
 
         # Compute cost for each rollout
         costs = self.quadruped_cost_np(states, actions, x_ref)
@@ -312,7 +338,7 @@ class MPPI(BaseMPPI):
             self.rollout_func(best_rollouts, np.array([self.selected_trajectory]), np.repeat(np.array([np.concatenate([[0],self.obs])]), 1, axis=0), num_workers=self.num_workers, nstep=self.horizon)
         # Compute and return the cost of the best trajectory
         return (self.cost_func(best_rollouts[:,:,1:], np.array([self.selected_trajectory]), self.joints_ref, self.body_ref))[0]
-
+        #cost_func is calculate_total_cost from BaseMPPI: def calculate_total_cost(self, states, actions, joints_ref, body_ref):
     def __del__(self):
         self.shutdown()
     
