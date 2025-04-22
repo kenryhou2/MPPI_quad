@@ -119,18 +119,21 @@ TASKS = {
         "cmd_vel": [[0.0, 0.0]] + [[0.5, 0.0]] * 3 + [[0.0, 0.0]],
         "goal_thresh": [0.2] * 5,
         "desired_gait": ['in_place', 
-                         'walk', 
-                         'trot', 
-                         'trot', 
+                        #  'walk', 
+                        #  'trot', 
+                        #  'trot', 
+                         'walk_fast',
+                         'walk_fast',
+                        'walk_fast',
                          'in_place'],
         "waiting_times": [50,
                           0, 
                           0, 
                           0, 
                           200],
-        "model_path": 'models/go1/go1_scene_mppi_pyr_big_box.xml',
-        "config_path": 'configs/mppi_gait_config_big_box.yml',
-        "sim_path": 'models/go1/go1_scene_mppi_pyr_big_box.xml'
+        'model_path': 'models/go2w/scene_mppi_pyr_big_box_go2w.xml',
+        'config_path': 'configs/mppi_gait_config_walk_go2w.yml',
+        'sim_path': 'models/go2w/scene_mppi_pyr_big_box_go2w.xml'
     },
     "stairs": {
         "goal_pos": [

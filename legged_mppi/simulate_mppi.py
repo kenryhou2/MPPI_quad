@@ -14,7 +14,7 @@ def main(task):
     CTRL_UPDATE_RATE = 100
     CTRL_HORIZON = 40
     CTRL_LAMBDA = 0.1
-    CTRL_N_SAMPLES = 20
+    CTRL_N_SAMPLES = 30
 
     # Soft contact model paramters
     TIMECONST = 0.02
@@ -47,4 +47,4 @@ if __name__ == "__main__":
 
     # Run main with the provided task
     # main(args.task)
-    main('roll_straight')
+    main('big_box')

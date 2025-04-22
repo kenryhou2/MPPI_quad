@@ -232,8 +232,8 @@ class MPPI(BaseMPPI):
         """
         # kp = 50  # Proportional gain for joint error
         # kd = 3   # Derivative gain for joint velocity error
-        kp = 82
-        kd = 12  
+        kp = 50
+        kd = 3  
 
         # Compute state error relative to the reference
         
