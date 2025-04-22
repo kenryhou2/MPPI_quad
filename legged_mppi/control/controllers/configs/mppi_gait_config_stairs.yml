@@ -1,7 +1,7 @@
 # ============================
 # MPPI Configuration File
 # ============================
-
+#stairs
 # MPPI Parameters
 # These control the behavior of the Model Predictive Path Integral optimization.
 dt: 0.01          # Time step size for simulation (in seconds).

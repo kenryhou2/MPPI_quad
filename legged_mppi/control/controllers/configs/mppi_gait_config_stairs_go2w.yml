@@ -1,14 +1,14 @@
 # ============================
 # MPPI Configuration File
 # ============================
-
+#Go2w stairs
 # MPPI Parameters
 # These control the behavior of the Model Predictive Path Integral optimization.
 dt: 0.01          # Time step size for simulation (in seconds).
-n_samples: 30     # Number of trajectory samples per iteration.
+n_samples: 50     # Number of trajectory samples per iteration.
 lambda: 0.1       # Temperature parameter for trajectory cost weighting.
 horizon: 40       # Prediction horizon (number of time steps).
-n_workers: 5      # Number of parallel workers for optimization.
+n_workers: 15      # Number of parallel workers for optimization.
 seed: 42          # Random seed for reproducibility.
 
 # ============================
@@ -53,26 +53,26 @@ noise_sigma:
 # Diagonal entries of the state cost matrix Q
 # Higher values penalize deviations from reference states more heavily.
 Q_diag:
-  - 7000   # x-position
-  - 7000   # y-position
-  - 15000  # z-position (height)
-  - 350000 # Quaternion distance cost
+  - 10000   # x-position
+  - 14000   # y-position
+  - 50000  # z-position (height)
+  - 5000000 # Quaternion distance cost
   - 0      # Does not matter
   - 0      # Does not matter
   - 0      # Does not matter
-  - 700    # Hip joint (FR)
-  - 700    # Thigh joint (FR)
-  - 700    # Calf joint (FR)
-  - 700    # Hip joint (FL)
-  - 700    # Thigh joint (FL)
-  - 700    # Calf joint (FL)
-  - 700    # Hip joint (RR)
-  - 700    # Thigh joint (RR)
-  - 700    # Calf joint (RR)
-  - 700    # Hip joint (RL)
-  - 700    # Thigh joint (RL)
-  - 700    # Calf joint (RL)
-  - 0.0001 # x velocity
+  - 900    # Hip joint (FR)
+  - 900    # Thigh joint (FR)
+  - 900    # Calf joint (FR)
+  - 900    # Hip joint (FL)
+  - 900    # Thigh joint (FL)
+  - 900    # Calf joint (FL)
+  - 900    # Hip joint (RR)
+  - 900    # Thigh joint (RR)
+  - 900    # Calf joint (RR)
+  - 900    # Hip joint (RL)
+  - 900    # Thigh joint (RL)
+  - 900    # Calf joint (RL)
+  - 0.5    # x velocity
   - 0.0001 # y velocity
   - 0.0001 # z velocity
   - 0.0001 # Angular velocity (x)

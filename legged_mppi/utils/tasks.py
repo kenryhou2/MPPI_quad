@@ -137,27 +137,27 @@ TASKS = {
     },
     "stairs": {
         "goal_pos": [
-                    #  [0.0, 0.0, 0.27], 
-                    #  [0.8, 0.0, 0.27], 
-                    #  [1.95, 0.0, 1.04],
-                    #  [2.9, 0.0, 1.78], 
-                    #  [3.2, 0.0, 1.78], 
-                    #  [3.3, 0.0, 1.73]],
-
-                     [3.3, 0.0, 1.73],
-                     [3.2, 0.0, 1.78],
-                     [2.9, 0.0, 1.78],
+                     [0.0, 0.0, 0.27], 
+                     [0.8, 0.0, 0.27], 
                      [1.95, 0.0, 1.04],
-                     [0.8, 0.0, 0.27],
-                     [0.0, 0.0, 0.27]],  
+                     [2.9, 0.0, 1.78], 
+                     [3.2, 0.0, 1.78], 
+                     [3.3, 0.0, 1.73]],
+
+                    #  [3.3, 0.0, 1.73],
+                    #  [3.2, 0.0, 1.78],
+                    #  [2.9, 0.0, 1.78],
+                    #  [1.95, 0.0, 1.04],
+                    #  [0.8, 0.0, 0.27],
+                    #  [0.0, 0.0, 0.27]],  
         "default_orientation": DEFAULT_ORIENTATION,
         "cmd_vel": [[0.0, 0.0]] + [[0.2, 0.0]] * 4 + [[0.0, 0.0]],
         "goal_thresh": [0.2] * 6,
         "desired_gait": ['in_place'] + ['walk'] * 4 + ['in_place'],
         "waiting_times": [50] + [0] * 5,
-        "model_path": 'models/go1/go1_scene_mppi_stairs.xml',
-        "config_path": 'configs/mppi_gait_config_stairs.yml',
-        "sim_path": 'models/go1/go1_scene_mppi_stairs.xml'
+        "model_path": 'models/go2w/scene_mppi_stairs_go2w.xml',
+        "config_path": 'configs/mppi_gait_config_stairs_go2w.yml',
+        "sim_path": 'models/go2w/scene_mppi_stairs_go2w.xml'
     },
     "stand": {
         "goal_pos": [[0, 0, 0.27]],
