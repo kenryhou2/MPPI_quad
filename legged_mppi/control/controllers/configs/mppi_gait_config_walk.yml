@@ -8,7 +8,7 @@ dt: 0.01          # Time step size for simulation (in seconds).
 n_samples: 30     # Number of trajectory samples per iteration.
 lambda: 0.1       # Temperature parameter for trajectory cost weighting.
 horizon: 40       # Prediction horizon (number of time steps).
-n_workers: 5      # Number of parallel workers for optimization.
+n_workers: 10      # Number of parallel workers for optimization.
 seed: 42          # Random seed for reproducibility.
 
 # ============================
@@ -56,18 +56,18 @@ Q_diag:
   - 0      # Quaternion rotation (x)
   - 0      # Quaternion rotation (y)
   - 0      # Quaternion rotation (z)
-  - 800    # Hip joint (FR)
-  - 800    # Thigh joint (FR)
-  - 800    # Calf joint (FR)
-  - 800    # Hip joint (FL)
-  - 800    # Thigh joint (FL)
-  - 800    # Calf joint (FL)
-  - 800    # Hip joint (RR)
-  - 800    # Thigh joint (RR)
-  - 800    # Calf joint (RR)
-  - 800    # Hip joint (RL)
-  - 800    # Thigh joint (RL)
-  - 800    # Calf joint (RL)
+  - 80    # Hip joint (FR)
+  - 80    # Thigh joint (FR)
+  - 80    # Calf joint (FR)
+  - 80    # Hip joint (FL)
+  - 80    # Thigh joint (FL)
+  - 80    # Calf joint (FL)
+  - 80    # Hip joint (RR)
+  - 80    # Thigh joint (RR)
+  - 80    # Calf joint (RR)
+  - 80    # Hip joint (RL)
+  - 80    # Thigh joint (RL)
+  - 80    # Calf joint (RL)
   - 1      # x velocity
   - 0.0001 # y velocity
   - 0.0001 # z velocity

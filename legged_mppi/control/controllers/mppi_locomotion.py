@@ -90,7 +90,7 @@ class MPPI(BaseMPPI):
                                         self.goal_ori[self.goal_index],
                                         self.cmd_vel[self.goal_index],
                                         np.zeros(4), # vz=0, ωx=0, ωy=0, ωz=0
-                                        4*np.ones(4))) # wheel_vel_ref (e.g. 4 rad/s)
+                                        15*np.ones(4))) # wheel_vel_ref (e.g. 4 rad/s)
                                         
         
         self.gait_scheduler = self.gaits[self.desired_gait[self.goal_index]]
@@ -139,10 +139,41 @@ class MPPI(BaseMPPI):
 
         if not self.task_success:
             if self.desired_gait[self.goal_index] in ['in_place', 'walk', 'walk_fast']:
-                self.noise_sigma = np.array([0.06, 0.4, 0.4] * 4+ [0.2]*4)
+                self.noise_sigma = np.array([0.06, 0.2, 0.2] * 4+ [1.2]*4)
             elif self.desired_gait[self.goal_index] in ['trot']:
                 self.noise_sigma = np.array([0.06, 0.1, 0.1] * 4+ [0.2]*4)
-        
+
+    def extract_wheel_heights(model, state_rollouts, wheel_names=["FL_wheel_link", "FR_wheel_link", "RL_wheel_link", "RR_wheel_link"]):
+        """
+        Extract wheel z-heights from state rollouts.
+
+        Args:
+            model (MjModel): The MuJoCo model.
+            state_rollouts (np.ndarray): Shape (samples, horizon, state_dim).
+            wheel_names (list): List of wheel body names.
+
+        Returns:
+            np.ndarray: Wheel heights (samples, horizon, 4).
+        """
+        num_samples, horizon, _ = state_rollouts.shape
+        wheel_heights = np.zeros((num_samples, horizon, len(wheel_names)))
+
+        # Allocate a temporary MjData for simulation
+        data = mujoco.MjData(model)
+
+        # Get body IDs for each wheel
+        wheel_ids = [mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, name) for name in wheel_names]
+
+        for i in range(num_samples):
+            for t in range(horizon):
+                mujoco.mj_setState(model, data, state_rollouts[i, t])
+                mujoco.mj_forward(model, data)
+
+                for j, bid in enumerate(wheel_ids):
+                    wheel_heights[i, t, j] = data.xpos[bid][2]  # Z component
+
+        return wheel_heights
+    
     def update(self, obs):
         """
         Update the MPPI controller based on the current observation.
@@ -177,6 +208,7 @@ class MPPI(BaseMPPI):
         if self.internal_ref:
             self.joints_ref = self.gait_scheduler.gait[:, self.gait_scheduler.indices[:self.horizon]]
 
+        #wheel_heights = self.extract_wheel_heights(self.model, self.state_rollouts[:,:,1:])
         # Calculate costs for each sampled trajectory
         costs_sum = self.cost_func(self.state_rollouts[:, :, 1:], actions, self.joints_ref, self.body_ref)
 

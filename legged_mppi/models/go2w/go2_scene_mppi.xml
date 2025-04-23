@@ -33,7 +33,7 @@
 
   <default>
     <default class="torque">
-      <general gainprm="60" ctrllimited="true" ctrlrange="-1 1"/>
+      <general gainprm="60" ctrllimited="false"/>
     </default>
     <default class="task">
       <site rgba="1 0 0 1" size=".02" group="5"/>
@@ -50,7 +50,7 @@
   </default>
 
   <include file="go2w.xml" />
-
+  <include file="fractal.xml" />
   <actuator>
     <general class="abduction" name="FR_hip" joint="FR_hip_joint"/>
     <general class="hip" name="FR_thigh" joint="FR_thigh_joint"/>
@@ -64,10 +64,10 @@
     <general class="abduction" name="RL_hip" joint="RL_hip_joint"/>
     <general class="hip" name="RL_thigh" joint="RL_thigh_joint"/>
     <general class="knee" name="RL_calf" joint="RL_calf_joint"/>
-    <velocity name="FL_wheel" joint="FL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
-    <velocity name="FR_wheel" joint="FR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
-    <velocity name="RL_wheel" joint="RL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
-    <velocity name="RR_wheel" joint="RR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
+    <velocity name="FL_wheel" joint="FL_wheel_joint" kv="1" ctrllimited="false"/>
+    <velocity name="FR_wheel" joint="FR_wheel_joint" kv="1" ctrllimited="false"/>
+    <velocity name="RL_wheel" joint="RL_wheel_joint" kv="1" ctrllimited="false"/>
+    <velocity name="RR_wheel" joint="RR_wheel_joint" kv="1" ctrllimited="false"/>
   </actuator>
   <!-- <actuator>
         <motor name="FL_hip"    gear="1" joint="FL_hip_joint"   ctrllimited="true" ctrlrange="-33.5 33.5"/>
@@ -159,8 +159,8 @@
   </keyframe> -->
   <keyframe>
     <key name="home" 
-         qpos="0 0 0.49
-               1 0 0 0 
+         qpos="0 0 0.48
+               0.7071 0 0 -0.7071
                0 0 0
                0 0 0
                0 0 0

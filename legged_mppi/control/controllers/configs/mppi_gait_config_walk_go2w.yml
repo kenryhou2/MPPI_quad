@@ -7,8 +7,8 @@
 dt: 0.01          # Time step size for simulation (in seconds).
 n_samples: 50     # Number of trajectory samples per iteration.
 lambda: 0.1       # Temperature parameter for trajectory cost weighting.
-horizon: 50       # Prediction horizon (number of time steps).
-n_workers: 15      # Number of parallel workers for optimization.d
+horizon: 80       # Prediction horizon (number of time steps).
+n_workers: 10      # Number of parallel workers for optimization.d
 seed: 42          # Random seed for reproducibility.
 
 # ============================
@@ -30,21 +30,21 @@ n_knots: 4          # Number of control points (knots) in the spline.
 # Noise standard deviations applied to control inputs for exploration.
 noise_sigma:
   - 0.06  # Hip joint (FR)
-  - 0.2   # Thigh joint (FR)
+  - 0.1   # Thigh joint (FR)
   - 0.1   # Calf joint (FR)
   - 0.06  # Hip joint (FL)
-  - 0.2   # Thigh joint (FL)
+  - 0.1   # Thigh joint (FL)
   - 0.1   # Calf joint (FL)
   - 0.06  # Hip joint (RR)
-  - 0.2   # Thigh joint (RR)
+  - 0.1   # Thigh joint (RR)
   - 0.1   # Calf joint (RR)
   - 0.06  # Hip joint (RL)
-  - 0.2   # Thigh joint (RL)
+  - 0.1   # Thigh joint (RL)
   - 0.1   # Calf joint (RL)
-  - 0.06   # Wheel joint (FR)
-  - 0.06   # Wheel joint (FL)
-  - 0.06   # Wheel joint (RR)
-  - 0.06  # Wheel joint (RL)
+  - 1.2   # Wheel joint (FR)
+  - 1.2   # Wheel joint (FL)
+  - 1.2   # Wheel joint (RR)
+  - 1.2  # Wheel joint (RL)
 
 # ============================
 # Cost Function Parameters
@@ -56,23 +56,23 @@ Q_diag:
   - 7000    # x-position
   - 7000    # y-position
   - 50000   # z-position (height)
-  - 2000000 # Quaternion rotation (w)
+  - 20000000 # Quaternion rotation (w)
   - 0      # Quaternion rotation (x)
   - 0      # Quaternion rotation (y)
   - 0      # Quaternion rotation (z)
-  - 80    # Hip joint (FR)
-  - 800    # Thigh joint (FR)
-  - 800    # Calf joint (FR)
-  - 80    # Hip joint (FL)
-  - 800    # Thigh joint (FL)
-  - 800    # Calf joint (FL)
-  - 80    # Hip joint (RR)
-  - 800   # Thigh joint (RR)
-  - 800    # Calf joint (RR)
-  - 80    # Hip joint (RL)
-  - 800    # Thigh joint (RL)
-  - 800   # Calf joint (RL)
-  - 1      # x velocity
+  - 800    # Hip joint (FR)
+  - 8000    # Thigh joint (FR)
+  - 8000    # Calf joint (FR)
+  - 800    # Hip joint (FL)
+  - 8000    # Thigh joint (FL)
+  - 8000    # Calf joint (FL)
+  - 800    # Hip joint (RR)
+  - 8000   # Thigh joint (RR)
+  - 8000    # Calf joint (RR)
+  - 800    # Hip joint (RL)
+  - 8000    # Thigh joint (RL)
+  - 8000   # Calf joint (RL)
+  - 100      # x velocity
   - 0.0001 # y velocity
   - 0.0001 # z velocity
   - 0.0001 # Angular velocity (x)
@@ -90,10 +90,10 @@ Q_diag:
   - 0.1    # Hip joint velocity (RL)
   - 0.1    # Thigh joint velocity (RL)
   - 0.1    # Calf joint velocity (RL)
-  - 10   # Wheel joint velocity (FR)
-  - 10   # Wheel joint velocity (FL)
-  - 10   # Wheel joint velocity (RR)
-  - 10   # Wheel joint velocity (RL)
+  - 0.1   # Wheel joint velocity (FR)
+  - 0.1   # Wheel joint velocity (FL)
+  - 0.1   # Wheel joint velocity (RR)
+  - 0.1   # Wheel joint velocity (RL)
 
   #size: 37x37 without wheels
   #size: 41x41 with wheel velocity

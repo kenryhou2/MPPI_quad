@@ -154,12 +154,12 @@ class Simulator:
                 #Copy the action to the new action
                 self.new_action = action
                 #set actions except for the last 4 to zero
-                # self.new_action[0:len(action)-4] = 0
-                # self.new_action[self.hip_indices] = 0.5
+                #self.new_action[0:len(action)-4] = 0
+                #self.new_action[self.hip_indices] = 0.5
                 
 
                 #set wheel velocities hardcoded
-                # self.new_action[-4:] = 0
+                #self.new_action[-4:] = 20
 
                 # self.new_action[self.abductor_indices] = action[self.abductor_indices] # set the abductor actions
                 

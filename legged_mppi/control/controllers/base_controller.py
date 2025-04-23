@@ -39,10 +39,10 @@ class BaseMPPI:
         self.n_samples = params['n_samples']
         self.noise_sigma = np.array(params['noise_sigma'])
         self.num_workers = params['n_workers']
-        self.sampling_init = np.array([-0.3, 1.34, -2.83,  # FL_hip, FL_thigh, FL_calf
-                                        0.3, 1.34, -2.83]  # FR_hip, FR_thigh, FR_calf
+        self.sampling_init = np.array([-0.3, 0.6, 0.6,  # FL_hip, FL_thigh, FL_calf
+                                        0.3, 0.6, 0.6]  # FR_hip, FR_thigh, FR_calf
                                         * 2                 # repeat for RL and RR
-                                        + [0.0]*4)          # zero for the 4 wheel actuators
+                                        + [40.0]*4)          # 4 wheel actuators
         # self.sampling_init = np.array([0, 0, 0,  # FL_hip, FL_thigh, FL_calf # joint angles (radians)
         #                                 0, 0, 0]  # FR_hip, FR_thigh, FR_calf
         #                                 * 2                 # repeat for RL and RR
@@ -68,8 +68,8 @@ class BaseMPPI:
 
         # Action limits
         self.act_dim = 16
-        self.act_max = np.array([0.863, 4.501, -0.888] * 4 + [5.0] * 4)
-        self.act_min = np.array([-0.863, -0.686, -2.818] * 4 + [-5.0] * 4)
+        self.act_max = np.array([0.463, 1.501, -0.888] + [0.463, 1.501, -0.888] + [0.463, 1.501, -0.888] + [0.463, 1.501, -0.888] + [50.0] * 4)
+        self.act_min = np.array([-0.463, -0.686, -1.818] + [-0.463, -0.686, -1.818]+ [-0.463, -0.686, -1.818] +[-0.463, -0.686, -1.818] + [0.0] * 4)
 
     def reset_planner(self):
         """Reset the action planner to its initial state."""
