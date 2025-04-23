@@ -12,7 +12,7 @@ def main(task):
 
     SIMULATION_STEP = 0.01
     CTRL_UPDATE_RATE = 100
-    CTRL_HORIZON = 40
+    CTRL_HORIZON = 50
     CTRL_LAMBDA = 0.1
     CTRL_N_SAMPLES = 30
 
