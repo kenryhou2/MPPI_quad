@@ -159,7 +159,7 @@ class Simulator:
                 
 
                 #set wheel velocities hardcoded
-                self.new_action[-4:] = 2
+                # self.new_action[-4:] = 2
 
                 # self.new_action[self.abductor_indices] = action[self.abductor_indices] # set the abductor actions
                 

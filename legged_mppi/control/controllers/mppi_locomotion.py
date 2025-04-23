@@ -90,7 +90,7 @@ class MPPI(BaseMPPI):
                                         self.goal_ori[self.goal_index],
                                         self.cmd_vel[self.goal_index],
                                         np.zeros(4), # vz=0, ωx=0, ωy=0, ωz=0
-                                        4*np.ones(4))) # wheel_vel_ref (e.g. 4 rad/s)
+                                        10*np.ones(4))) # wheel_vel_ref (e.g. 4 rad/s)
                                         
         
         self.gait_scheduler = self.gaits[self.desired_gait[self.goal_index]]
