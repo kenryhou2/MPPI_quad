@@ -64,10 +64,10 @@
     <general class="abduction" name="RL_hip" joint="RL_hip_joint"/>
     <general class="hip" name="RL_thigh" joint="RL_thigh_joint"/>
     <general class="knee" name="RL_calf" joint="RL_calf_joint"/>
-    <velocity name="FL_wheel" joint="FL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
-    <velocity name="FR_wheel" joint="FR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
-    <velocity name="RL_wheel" joint="RL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
-    <velocity name="RR_wheel" joint="RR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
+    <velocity name="FL_wheel" joint="FL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 20"/>
+    <velocity name="FR_wheel" joint="FR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 20"/>
+    <velocity name="RL_wheel" joint="RL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 20"/>
+    <velocity name="RR_wheel" joint="RR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 20"/>
   </actuator>
   <!-- <actuator>
         <motor name="FL_hip"    gear="1" joint="FL_hip_joint"   ctrllimited="true" ctrlrange="-33.5 33.5"/>
