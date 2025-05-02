@@ -4,7 +4,7 @@
   <size memory="1M"/>
 
   <custom>
-    <!-- estimator -->
+    
     <numeric name="estimator" data="1" />
   </custom>
 
@@ -16,20 +16,11 @@
   <statistic extent="1" center="0 0 .3"/>
 
   <worldbody>
-    <light pos="0 0 1.5" dir="0 0 -1" diffuse="0.5 0.5 0.5" specular="0.3 0.3 0.3"
-      directional="true" castshadow="false"/>
+    <light pos="0 0 1.5" dir="0 0 -1" diffuse="0.5 0.5 0.5" specular="0.3 0.3 0.3" directional="true" castshadow="false"/>
     <geom name="floor" size="0 0 0.1" pos="0 0 -0.01" type="plane" material="blue_grid"/>
-    <!-- <body name="goal" mocap="true" pos=".3 0 0.26">
-      <geom size="0.12" contype="0" conaffinity="0" rgba="0 1 0 .5" group="2"/>
-    </body> -
-    <body name="box" mocap="true" pos="1.5 0 0">
-      <geom name="box" class="prop" size="0.7 0.7 0.1"/>
-    </body>
-    -->
-    <!-- 
-    <geom name="ramp" class="prop" pos="3.13 2.5 -.18" size="1.6 1 .5" euler="0 -0.2 0"/>
-    <geom name="hill" class="prop" pos="6 6 -5.5" size="6" type="sphere"/> -->
-  </worldbody>
+    
+    
+  <geom pos="1.2 0.0 0.075" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="1.4 0.0 0.22499999999999998" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="1.6 0.0 0.375" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="1.8 0.0 0.525" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="2.0 0.0 0.675" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="2.2 0.0 0.8250000000000001" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="2.4 0.0 0.9750000000000001" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="2.5999999999999996 0.0 1.125" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="2.8 0.0 1.275" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="3.0 0.0 1.4249999999999998" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="3.2 0.0 1.4249999999999998" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /><geom pos="3.4 0.0 1.4249999999999998" type="box" size="0.1 0.75 0.075" quat="1.0 0.0 0.0 0.0" /></worldbody>
 
   <default>
     <default class="torque">
@@ -49,6 +40,7 @@
     </default>
   </default>
 
+  <!-- <include file="go1_mppi_all_contacts.xml" /> -->
   <include file="go2w.xml" />
 
   <actuator>
@@ -64,32 +56,15 @@
     <general class="abduction" name="RL_hip" joint="RL_hip_joint"/>
     <general class="hip" name="RL_thigh" joint="RL_thigh_joint"/>
     <general class="knee" name="RL_calf" joint="RL_calf_joint"/>
-    <velocity name="FL_wheel" joint="FL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 20"/>
-    <velocity name="FR_wheel" joint="FR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 20"/>
-    <velocity name="RL_wheel" joint="RL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 20"/>
-    <velocity name="RR_wheel" joint="RR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 20"/>
+    <velocity name="FL_wheel" joint="FL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
+    <velocity name="FR_wheel" joint="FR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
+    <velocity name="RL_wheel" joint="RL_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
+    <velocity name="RR_wheel" joint="RR_wheel_joint" kv="1" ctrllimited="true" ctrlrange="-0 5"/>
   </actuator>
-  <!-- <actuator>
-        <motor name="FL_hip"    gear="1" joint="FL_hip_joint"   ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="FL_thigh"  gear="1" joint="FL_thigh_joint" ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="FL_calf"   gear="1" joint="FL_calf_joint"  ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="FR_hip"    gear="1" joint="FR_hip_joint"   ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="FR_thigh"  gear="1" joint="FR_thigh_joint" ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="FR_calf"   gear="1" joint="FR_calf_joint"  ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="RL_hip"    gear="1" joint="RL_hip_joint"   ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="RL_thigh"  gear="1" joint="RL_thigh_joint" ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="RL_calf"   gear="1" joint="RL_calf_joint"  ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="RR_hip"    gear="1" joint="RR_hip_joint"   ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="RR_thigh"  gear="1" joint="RR_thigh_joint" ctrllimited="true" ctrlrange="-33.5 33.5"/>
-        <motor name="RR_calf"   gear="1" joint="RR_calf_joint"  ctrllimited="true" ctrlrange="-33.5 33.5"/>
-  </actuator> -->
+  
   <sensor>
-    <!-- estimator measurements -->
-    <!-- <framepos name="torso_pos" objtype="body" objname="trunk" />
-    <framepos name="FR_pos" objtype="site" objname="FR" />
-    <framepos name="FL_pos" objtype="site" objname="FL" />
-    <framepos name="RR_pos" objtype="site" objname="RR" />
-    <framepos name="RL_pos" objtype="site" objname="RL" /> -->
+    
+    
 
     <framepos name="torso_pos" objtype="xbody" objname="base_link" />
     <framequat name="torso_quat" objtype="xbody" objname="base_link" />
@@ -107,19 +82,50 @@
     <jointpos name="pos_RL_thigh_joint" joint="RL_thigh_joint" />
     <jointpos name="pos_RL_calf_joint" joint="RL_calf_joint" />
 
-    <!-- <gyro site="imu" name="gyro"/>
-    <accelerometer site="imu" name="accelerometer"/> -->
+    
 
-    <!-- <touch name="FR_touch" site="FR"/>
-    <touch name="FL_touch" site="FL"/>
-    <touch name="RR_touch" site="RR"/>
-    <touch name="RL_touch" site="RL"/> -->
+    
   </sensor>
 
-
+  <!-- <keyframe>
+    <key name="home" 
+         qpos="3.3 0 1.73
+               1 0 0 0                
+               0 0.9 -1.8                 
+               0 0.9 -1.8                 
+               0 0.9 -1.8                 
+               0 0.9 -1.8" 
+        ctrl="0 0.9 -1.8              
+        0 0.9 -1.8              
+        0 0.9 -1.8              
+        0 0.9 -1.8" />
+    
+    <key name="sit" 
+    qpos="0 0 0.08              
+          1 0 0 0              
+          0.073 1.34 -2.83              
+          0.073 1.34 -2.83              
+          0.073 1.34 -2.83              
+          0.073 1.34 -2.83" 
+    ctrl="0.073 1.34 -2.83              
+          0.073 1.34 -2.83              
+          0.073 1.34 -2.83              
+          0.073 1.34 -2.83" />
+    <key name="tune" 
+        qpos="0 0 0.08              
+              1 0 0 0              
+              -0.1 1.34 -2.83              
+              0.1 1.34 -2.83              
+              -0.1 1.34 -2.83              
+              0.1 1.34 -2.83" 
+        ctrl="-0.1 1.34 -2.83              
+                0.1 1.34 -2.83              
+                -0.1 1.34 -2.83              
+                0.1 1.34 -2.83" />
+  </keyframe> -->
   <keyframe>
     <key name="home" 
-         qpos="-0.5 0 0.49
+         qpos="0 0 0.49
                1 0 0 0 
                0 0 0
                0 0 0

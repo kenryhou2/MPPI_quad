@@ -7,14 +7,14 @@ import argparse
 import os
 
 def main(task):
-    T = 2000  # 20 seconds
+    T = 1000  # 20 seconds
     VIEWER = True
 
     SIMULATION_STEP = 0.01
     CTRL_UPDATE_RATE = 100
-    CTRL_HORIZON = 40
+    CTRL_HORIZON = 50
     CTRL_LAMBDA = 0.1
-    CTRL_N_SAMPLES = 20
+    CTRL_N_SAMPLES = 30
 
     # Soft contact model paramters
     TIMECONST = 0.04
@@ -43,8 +43,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run simulation with a specified task.")
     parser.add_argument('--task', type=str, required=True, choices=VALID_TASKS, 
                         help=f"Name of the task. Must be one of {VALID_TASKS}.")
-    # args = parser.parse_args()
+    args = parser.parse_args()
 
     # Run main with the provided task
-    # main(args.task)
-    main('roll_straight')
+    main(args.task)
+    # main('big_box')

@@ -1,7 +1,7 @@
 # ============================
 # MPPI Configuration File
 # ============================
-#stairs
+
 # MPPI Parameters
 # These control the behavior of the Model Predictive Path Integral optimization.
 dt: 0.01          # Time step size for simulation (in seconds).
@@ -41,6 +41,10 @@ noise_sigma:
   - 0.06 # Hip joint (Rear Left - RL)
   - 0.2  # Thigh joint (RL)
   - 0.2  # Calf joint (RL)
+  - 0.06   # Wheel joint (FR)
+  - 0.06   # Wheel joint (FL)
+  - 0.06   # Wheel joint (RR)
+  - 0.06  # Wheel joint (RL)
 
 # ============================
 # Cost Function Parameters
@@ -49,10 +53,10 @@ noise_sigma:
 # Diagonal entries of the state cost matrix Q
 # Higher values penalize deviations from reference states more heavily.
 Q_diag:
-  - 6000   # x-position
-  - 2000   # y-position
-  - 6000  # z-position (height)
-  - 500000 # Quaternion distance cost
+  - 7000   # x-position
+  - 7000   # y-position
+  - 15000  # z-position (height)
+  - 350000 # Quaternion distance cost
   - 0      # Does not matter
   - 0      # Does not matter
   - 0      # Does not matter
@@ -68,7 +72,7 @@ Q_diag:
   - 700    # Hip joint (RL)
   - 700    # Thigh joint (RL)
   - 700    # Calf joint (RL)
-  - 0.1    # x velocity
+  - 0.0001 # x velocity
   - 0.0001 # y velocity
   - 0.0001 # z velocity
   - 0.0001 # Angular velocity (x)
@@ -86,6 +90,10 @@ Q_diag:
   - 0.1    # Hip joint velocity (RL)
   - 0.1    # Thigh joint velocity (RL)
   - 0.1    # Calf joint velocity (RL)
+  - 1   # Wheel joint velocity (FR)
+  - 1   # Wheel joint velocity (FL)
+  - 1   # Wheel joint velocity (RR)
+  - 1   # Wheel joint velocity (RL)
 
 # Diagonal entries of the control cost matrix R
 # Penalizes excessive control effort (torque commands).
@@ -102,3 +110,7 @@ R_diag:
   - 0.001 # Hip joint (RL)
   - 0.001 # Thigh joint (RL)
   - 0.001 # Calf joint (RL)
+  - 0.001  # Wheel joint (FR)
+  - 0.001  # Wheel joint (FL)
+  - 0.001  # Wheel joint (RR)
+  - 0.001  # Wheel joint (RL)

@@ -90,7 +90,7 @@ class MPPI(BaseMPPI):
                                         self.goal_ori[self.goal_index],
                                         self.cmd_vel[self.goal_index],
                                         np.zeros(4), # vz=0, ωx=0, ωy=0, ωz=0
-                                        4*np.ones(4))) # wheel_vel_ref (e.g. 4 rad/s)
+                                        5*np.ones(4))) # wheel_vel_ref (e.g. 4 rad/s)
                                         
         
         self.gait_scheduler = self.gaits[self.desired_gait[self.goal_index]]
@@ -230,10 +230,10 @@ class MPPI(BaseMPPI):
         Returns:
             np.ndarray: Computed cost for each sample.
         """
-        # kp = 50  # Proportional gain for joint error
-        # kd = 3   # Derivative gain for joint velocity error
-        kp = 82
-        kd = 12  
+        kp = 50  # Proportional gain for joint error
+        kd = 3   # Derivative gain for joint velocity error
+        # kp = 80
+        # kd = 3  
 
         # Compute state error relative to the reference
         
@@ -258,10 +258,10 @@ class MPPI(BaseMPPI):
         u_error = kp * (u[:,:12] - x_joint) - kd * v_joint
 
         # Compute positional cost (L1 norm for positional error)
-        x_error[:, :3] = 0  # Ignore positional error for simplicity
+        # x_error[:, :3] = 0  # Ignore positional error for simplicity
         x_pos_error = x[:, :3] - x_ref[:, :3]
         L1_norm_pos_cost = np.abs(np.dot(x_pos_error, self.Q[:3, :3])).sum(axis=1)
-
+        L1_norm_pos_cost = 0
         # Compute total cost
         cost = (
             np.einsum('ij,ik,jk->i', x_error, x_error, self.Q) +

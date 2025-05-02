@@ -159,7 +159,7 @@ class Simulator:
                 
 
                 #set wheel velocities hardcoded
-                # self.new_action[-4:] = 0
+                # self.new_action[-4:] = 8
 
                 # self.new_action[self.abductor_indices] = action[self.abductor_indices] # set the abductor actions
                 
@@ -291,10 +291,20 @@ class Simulator:
         plt.plot(self.time[:], self.ctrl[9, :], label="RL_thigh", color="magenta")
         plt.plot(self.time[:], self.ctrl[10, :], label="RL_hip", color="green")
         plt.plot(self.time[:], self.ctrl[11, :], label="RL_knee", color="red")
-
         plt.legend()
         plt.xlabel("Time (s)")
         plt.ylabel("Control (angles)")
+
+        # plot cost
+        fig = plt.figure()
+        plt.plot(self.time, self.cost[0, :], label="Instantaneous cost")
+        plt.xlabel("Time (s)")
+        plt.ylabel("Cost  $\\mathcal{L}^{(i)}_k$")
+        plt.title("MPPI per‑step running cost")
+        plt.yscale("log")          # optional: log scale if values vary widely
+        plt.grid(True, which="both", ls=":")
+        plt.legend()
+
         plt.show()
         
         return None
