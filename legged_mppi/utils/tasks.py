@@ -112,7 +112,7 @@ TASKS = {
     "big_box": {
         "goal_pos": [[0, 0, 0.27], 
                      [0.4, 0, 0.27], 
-                     [0.7, 0, 0.7], 
+                     [0.74, 0, 0.65], 
                      [1, 0, 0.65], 
                      [1, 0, 0.65]],
         "default_orientation": DEFAULT_ORIENTATION,
