@@ -43,8 +43,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run simulation with a specified task.")
     parser.add_argument('--task', type=str, required=True, choices=VALID_TASKS, 
                         help=f"Name of the task. Must be one of {VALID_TASKS}.")
-    # args = parser.parse_args()
+    args = parser.parse_args()
 
     # Run main with the provided task
-    # main(args.task)
-    main('stairs')
+    main(args.task)
+    # main('big_box')
