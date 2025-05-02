@@ -49,8 +49,8 @@ noise_sigma:
 # Diagonal entries of the state cost matrix Q
 # Higher values penalize deviations from reference states more heavily.
 Q_diag:
-  - 7000   # x-position
-  - 7000   # y-position
+  - 5000   # x-position
+  - 1000   # y-position
   - 15000  # z-position (height)
   - 350000 # Quaternion distance cost
   - 0      # Does not matter
