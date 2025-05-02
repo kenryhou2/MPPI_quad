@@ -135,9 +135,9 @@ TASKS = {
                           0, 
                           0, 
                           0, 
-                          100,
+                          10,
                           0,
-                          200],
+                          20],
         'model_path': 'models/go2w/scene_mppi_pyr_big_box_go2w.xml',
         'config_path': 'configs/mppi_gait_config_walk_go2w.yml',
         'sim_path': 'models/go2w/scene_mppi_pyr_big_box_go2w.xml'

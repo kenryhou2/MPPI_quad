@@ -86,10 +86,10 @@ Q_diag:
   - 0.1    # Hip joint velocity (RL)
   - 0.1    # Thigh joint velocity (RL)
   - 0.1    # Calf joint velocity (RL)
-  - 10   # Wheel joint velocity (FR)
-  - 10   # Wheel joint velocity (FL)
-  - 10   # Wheel joint velocity (RR)
-  - 10   # Wheel joint velocity (RL)
+  - 1   # Wheel joint velocity (FR)
+  - 1   # Wheel joint velocity (FL)
+  - 1   # Wheel joint velocity (RR)
+  - 1   # Wheel joint velocity (RL)
 
 # Diagonal entries of the control cost matrix R
 # Penalizes excessive control effort (torque commands).

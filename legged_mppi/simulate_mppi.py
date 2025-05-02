@@ -7,7 +7,7 @@ import argparse
 import os
 
 def main(task):
-    T = 2000  # 20 seconds
+    T = 1000  # 20 seconds
     VIEWER = True
 
     SIMULATION_STEP = 0.01
