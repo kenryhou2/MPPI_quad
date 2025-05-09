@@ -305,7 +305,79 @@ class Simulator:
         plt.grid(True, which="both", ls=":")
         plt.legend()
 
+        # final MPPI cost plot and show existing figures…
+        fig = plt.figure()
+        plt.plot(self.time, self.cost[0, :], label="Instantaneous cost")
+        plt.xlabel("Time (s)")
+        plt.ylabel(r"Cost  $\mathcal{L}^{(i)}_k$")
+        plt.title("MPPI per-step running cost")
+        plt.yscale("log")
+        plt.grid(True, which="both", ls=":")
+        plt.legend()
+
+        
+        # === ENERGY & COST-OF-TRANSPORT SECTION ===
+
+        nu, T = self.ctrl.shape
+        dt = self.model.opt.timestep
+
+        # instantaneous power per joint
+        joint_vel = self.qvel[:nu, :]                 # (nu, T)
+        power     = self.ctrl * joint_vel             # (nu, T)
+
+        # total energy per joint
+        energy = np.sum(np.abs(power), axis=1) * dt   # (nu,)
+
+        # ——— 1) hard-coded joint names ———
+        joint_names = [
+            "FL_hip",   "FL_thigh",  "FL_calf",
+            "FR_hip",   "FR_thigh",  "FR_calf",
+            "RL_hip",   "RL_thigh",  "RL_calf",
+            "RR_hip",   "RR_thigh",  "RR_calf",
+            "FL_wheel", "FR_wheel",  "RL_wheel", "RR_wheel"
+        ]
+
+        # ——— 2) Bar chart: total energy per joint ———
+        fig1 = plt.figure()
+        plt.bar(joint_names, energy)
+        plt.xticks(rotation=45, ha="right")
+        plt.xlabel("Joint")
+        plt.ylabel("Energy (J)")
+        plt.title("Per-Joint Energy Consumption")
+        plt.grid(True, ls=":")
+
+        # ——— 3) Per-joint cumulative energy over time ———
+        cum_energy = np.cumsum(np.abs(power), axis=1) * dt  # (nu, T)
+        fig2 = plt.figure()
+        for j, name in enumerate(joint_names):
+            plt.plot(self.time, cum_energy[j], label=name)
+        plt.xlabel("Time (s)")
+        plt.ylabel("Cumulative Energy (J)")
+        plt.title("Per-Joint Cumulative Energy Over Time")
+        plt.legend(loc="upper left", bbox_to_anchor=(1,1))
+        plt.grid(True, ls=":")
+
+        # ——— 4) Total cumulative energy (all joints) ———
+        total_cum = np.cumsum(np.sum(np.abs(power), axis=0)) * dt  # (T,)
+        fig3 = plt.figure()
+        plt.plot(self.time, total_cum)
+        plt.xlabel("Time (s)")
+        plt.ylabel("Total Cumulative Energy (J)")
+        plt.title("Total Energy Over Time")
+        plt.grid(True, ls=":")
+
+        # ——— 5) Compute & print Cost-of-Transport ———
+        mass = float(np.sum(self.model.body_mass))
+        pos  = self.qpos[:3, :]
+        dist = np.sum(np.linalg.norm(np.diff(pos, axis=1), axis=0))
+        cot  = np.sum(energy) / (mass * 9.81 * dist) if dist > 0 else np.nan
+        print(f"Total Cost of Transport: {cot:.4f}")
+
+        plt.tight_layout()
         plt.show()
+
+
+
         
         return None
 
