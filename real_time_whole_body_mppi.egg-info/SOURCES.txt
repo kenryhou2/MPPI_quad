@@ -1,9 +1,0 @@
-LICENSE
-README.md
-pyproject.toml
-setup.py
-real_time_whole_body_mppi.egg-info/PKG-INFO
-real_time_whole_body_mppi.egg-info/SOURCES.txt
-real_time_whole_body_mppi.egg-info/dependency_links.txt
-real_time_whole_body_mppi.egg-info/requires.txt
-real_time_whole_body_mppi.egg-info/top_level.txt

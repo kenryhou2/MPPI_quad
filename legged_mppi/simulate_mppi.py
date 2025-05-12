@@ -7,7 +7,7 @@ import argparse
 import os
 
 def main(task):
-    T = 2000  # 100 = 1s
+    T = 1000  # 100 = 1s
     VIEWER = True
 
     SIMULATION_STEP = 0.01
@@ -37,7 +37,7 @@ def main(task):
 
 if __name__ == "__main__":
     # Define valid tasks
-    VALID_TASKS = ['stairs', 'walk_octagon', 'walk_straight', 'big_box', 'roll_straight']
+    VALID_TASKS = ['stairs', 'walk_octagon', 'big_box', 'roll_straight']
 
     # Parse arguments
     parser = argparse.ArgumentParser(description="Run simulation with a specified task.")
@@ -47,4 +47,3 @@ if __name__ == "__main__":
 
     # Run main with the provided task
     main(args.task)
-    # main('roll_straight')

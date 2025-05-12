@@ -1,30 +1,64 @@
-# Whole Body MPPI
+# Whole-Body MPPI for Wheeled Quadruped
 
-A Python implementation of a **Model Predictive Path Integral (MPPI)** controller for whole-body motion tasks of a quadruped robot in simulation. This project includes tasks such as general locomotion and box-pushing, with interactive Jupyter Notebooks to explore different functionalities.
+<p align="center">
+  
+  <img src="animations/mppi.gif"   alt="MPPI"   width="23%" />
+  <img src="animations/wheeled_quad_rough_terrain2x.gif"  alt="Roll over Rough Terrain Simulation" width="23%" />
+  <!-- <img src="animations/wheeled_quad_big_box5x.gif"        alt="Big Box Simulation"        width="23%" />
+  <img src="animations/wheeled_quad_stairs2x.gif"         alt="Stairs Simulation"         width="23%" /> -->
+</p>
 
-<center>
-
-![](./animations/mppi.gif)
-
-</center>
+This repository adapts the original **Whole-Body MPPI** controller (Alvarez-Padilla *et al.*) as inspiration for real-time Model Predictive Path Integral (MPPI) control of a wheeled quadruped platform. Our implementation extends the legged quadruped example to the Unitree Go2W wheeled–legged robot, enriching the action space and cost function to support wheel-velocity regulation and hybrid locomotion behaviors.
 
 ---
-## **Release Note**  
-* 🤖🐕 [2024/11/21] This is the **first release** of the Whole Body MPPI project. Key highlights of this release include:
-    - Provides complete **MPPI controller implementations** for whole-body motion in simulation environments.
-    - Focused entirely on **simulation tasks** for quadruped robots, showcasing general locomotion, stair climbing, and box pushing.
-    - Includes interactive **Jupyter Notebooks** for experimenting with different MPPI tasks and configurations.
+# Abstract
 
-* 🔔 Future updates:
-    - The **hardware implementation code** for deploying these tasks on Unitree Go1 will be released soon.
+We present a real-time whole-body motion planning framework that extends Model Predictive Path Integral (MPPI) control from purely legged quadrupeds to wheeled–legged robots. Building on the Unitree Go2W platform, we augment the action space with four wheel–torque channels and enrich the running cost with (i) wheel-velocity regulation, (ii) a PD-shaped joint effort term, and (iii) an L1 penalty on base positional drift. A wheel-aware modification of the Raibert heuristic guides joint–angle sampling, while soft joint-limit penalties maintain mechanical feasibility.
+
+Simulation studies demonstrate agile behaviors that are difficult for purely legged systems: rolling stair ascent, fast rough-terrain traversal, a stable 35 cm box jump, and waypoint following on flat ground. Compared with a leg-only baseline, the wheeled controller reduces traversal time by 55.7% and achieves 134.5% greater forward velocity on rough terrain while keeping wheel–ground contact smooth. The entire pipeline operates without offline learning or precomputed contact schedules, highlighting MPPI’s ability to handle the hybrid dynamics of wheeled–legged locomotion in a uniform sampling-based fashion.
+
+These results indicate that sampling-based MPC can serve as a unified control layer for future multi-modal robots that must seamlessly switch between walking, rolling, and jumping in unstructured environments.
+
+# Contribution of the Wheeled Controller Over the Legged Controller
+
+The wheeled controller extends the baseline legged MPPI framework with key enhancements that significantly improve performance:
+
+- **Extended Action Space**: Adds four wheel-torque channels to enable active rolling dynamics in addition to leg motion.
+- **Enhanced Cost Terms**:
+  - **Wheel-Velocity Regulation**: Enforces smooth and energy-efficient wheel contact.
+  - **PD Joint-Effort Penalty**: Encourages conservative joint torques.
+  - **L1 Positional Drift Penalty**: Penalizes base displacement errors without requiring direct Cartesian tracking.
+- **Modified Raibert Heuristic**: Anticipates wheel effects on foot placement by offsetting foot targets using wheel speed, improving traction and contact stability.
+- **Performance Gains**:
+  - **Rough Terrain**: 55.7% reduction in traversal time and 134.5% increase in forward velocity compared to legged baseline.
+  - **Box Jump and Stair Climb**: Enables high-clearance jumps and robust stair climbing via hybrid rolling-lifting dynamics.
+- **Unified Framework**: Achieves all behaviors using the same MPPI controller—no need for separate planners, precomputed contact schedules, or learning-based components.
+
+These innovations demonstrate the controller’s ability to generalize over multi-modal terrain tasks using a principled sampling-based MPC framework.
+
+---
+
+## Release Notes
+
+* 🤖🐕 **2024/11/21** First release of Whole-Body MPPI project: complete MPPI controller implementations, general locomotion, stair climbing, and box-pushing tasks, plus interactive notebooks.
+* 🚗🔄 **2025/05/12** Adaptation for wheeled quadruped (Go2W): enriched action space, wheel-velocity regulation, new gait configs, and updated cost functions.
+
 ---
 
 ## Contents
+
 - [Installation](#installation)
-- [Tasks](#tasks)
-- [Notebooks](#notebooks)
+- [Steps](#steps)
+- [Locomotion Tasks](#locomotion-tasks)
 - [Simulation](#simulation)
 - [Definitions](#definitions)
+- [Hyperparameter Configuration](#hyperparameter-configuration)
+- [Simulation Parameters](#simulation-parameters)
+- [Cost Weights](#cost-weights)
+- [Temperature (λ)](#temperature-λ)
+- [Robot Models & Task Scenes](#robot-models--task-scenes)
+- [Directory Structure](#directory-structure)
+- [References](#references)
 - [License](#license)
 
 ---
@@ -32,191 +66,219 @@ A Python implementation of a **Model Predictive Path Integral (MPPI)** controlle
 ## Installation
 
 ### Prerequisites
-- Python 3.9 or higher
-- [Conda](https://docs.conda.io/en/latest/) (recommended for managing environments)
+- Python 3.9 or higher  
+- MuJoCo 2.3 or newer  
+- [Conda](https://docs.conda.io/en/latest/) (recommended)
 
-### Steps
-1. **Create a Conda Environment**  
-   Create and activate a dedicated environment for this project:
-   ```bash
-   conda create --name whole-body-mppi python=3.9 -y
-   conda activate whole-body-mppi
-   ```
-2. **Install the Package**
-    Install the required Python packages:
-    ```bash
-    pip install -e .
-    ```
----
-## Tasks
-### General locomotion tasks
-
-<center>
-
-| **Walk Straight Task**                            | **Walk Octagon Task**                    |
-|:----------------------------------------:|:----------------------------------------:|
-| ![](./animations/walk_straight.gif)               | ![](./animations/walk_octagon.gif)       |
-
-| **Big Box Task**                          | **Stairs Task**                         |
-|:----------------------------------------:|:----------------------------------------:|
-| ![](./animations/big_box.gif)             | ![](./animations/stairs.gif)            |
-
-</center>
-
-### Locomanipulation task
-
-<center>
-
-| **Push a box**                            | 
-|:----------------------------------------:|
-| ![](./animations/push_box.gif)               |
-
-</center>
-
-## Notebooks
-You can interact with the MPPI tasks using the provided Jupyter Notebooks:
-1. Legged Locomotion
-Notebook for general MPPI tasks:
-```
-legged_mppi/MPPI_tasks.ipynb
-```
-2. Legged Locomanipulation
-Notebook for box-pushing tasks:
-```
-legged_mppi/MPPI_tasks_push.ipynb
-```
----
-## Simulation
-To run a simulation, use the provided Python script:
+### Setup
 ```bash
-   cd legged_mppi
-   python simulate_mppi.py --task <task_name>
+conda create --name wheeled-mppi python=3.9 -y
+conda activate wheeled-mppi
+pip install -e .
 ```
-### Available Tasks
-The following tasks can be simulated:
 
+---
+
+## Steps
+
+1. **Create environment**
+   ```bash
+   conda create --name wheeled-mppi python=3.9 -y
+   conda activate wheeled-mppi
+   ```
+2. **Install package**
+   ```bash
+   pip install -e .
+   ```
+
+---
+
+## Locomotion Tasks
+
+Defined in `legged_mppi/utils/tasks.py`. Each task specifies goals, orientations, velocities, and gait patterns.
+
+<center>
+
+| **Rolling Gait on Rough Terrain**                         | **Walk Waypoints**                     |
+|:-----------------------------------------:|:------------------------------------:|
+| <img src="animations/wheeled_quad_rough_terrain2x.gif" alt="Walk Straight" width="200px" /> | <img src="animations/wheeled_quad_walk3x.gif" alt="Walk Octagon" width="200px" /> |
+
+| **Big Box**                              | **Stairs**                           |
+|:-----------------------------------------:|:------------------------------------:|
+| <img src="animations/wheeled_quad_big_box5x.gif" alt="Big Box" width="200px" />      | <img src="animations/wheeled_quad_stairs2x.gif" alt="Stairs" width="200px" />      |
+
+</center>
+
+---
+
+## Simulation
+
+Make sure to run all commands from within the `legged_mppi` directory:
+```bash
+cd legged_mppi
+python simulate_mppi.py --task <task_name>
+```
+
+### Available Tasks
 - `walk_straight`
-- `walk_octagon`
+- `roll_straight`
 - `big_box`
 - `stairs`
 
-
-### Example Usage
-Run a simulation for the `stairs` task:
-
+### Example
 ```bash
 python simulate_mppi.py --task stairs
 ```
+
 ---
 
 ## Definitions
-Tasks are defined in the `legged_mppi/utils/tasks.py` file. This file contains the descrition of every task as a dictionary containing the following variables:
 
-| **Parameter**       | **Description**                                                                                          |
-|----------------------|----------------------------------------------------------------------------------------------------------|
-| `goal_pos`          | List of 3D goal positions (x, y, z) the robot should reach.                                               |
-| `default_orientation` | Default orientation in quaternion form `[w, x, y, z]`.                                                  |
-| `cmd_vel`           | List of commanded velocity `[linear x, linear y]` in body frame at each goal.                                                     |
-| `goal_thresh`       | List of threshold distances to consider the goal reached.                                                        |
-| `desired_gait`      | List of gait patterns (e.g., `walk`, `trot`, `in_place`) for each stage.                                 |
-| `waiting_times`     | List of timesteps to wait at each goal position. (100 timesteps are 1 second with the current setup)                                                                      |
-| `model_path`        | Path to the robot's MuJoCo model XML file.                                                               |
-| `config_path`       | Path to the YAML configuration file defining MPPI parameters.                                            |
-| `sim_path`          | Path to the simulation scene file for the task.                                                          |
+| **Parameter**           | **Description**                                                                 |
+|-------------------------|---------------------------------------------------------------------------------|
+| `goal_pos`             | List of 3D goal positions `[x, y, z]`                                           |
+| `default_orientation`  | Goal orientation as quaternion `[w, x, y, z]`                                   |
+| `cmd_vel`              | Commanded velocity `[linear_x, linear_y, angular_z]`                           |
+| `goal_thresh`          | Threshold distances to consider goal reached                                   |
+| `desired_gait`         | Gait patterns (`walk`, `sit`, `in_place`, `wheeled`)                           |
+| `waiting_times`        | Timesteps to wait at each goal position                                         |
+| `model_path`           | Path to robot MuJoCo XML model                                                   |
+| `config_path`          | YAML file defining MPPI parameters                                              |
+| `sim_path`             | MuJoCo scene XML file for task environment                                       |
 
-### Hyperparameter Configuration
+---
 
-MPPI hyperparameters are defined in YAML configuration files located in `legged_mppi/control/controllers/configs`.
-These configuration files include:
+## Hyperparameter Configuration
 
-#### **Simulation Parameters**
-- **Time step (`dt`)**: Defines the simulation's time step size.
-- **Horizon length (`horizon`)**: Specifies how many future steps are considered in planning.
-- **Number of samples (`n_samples`)**: The number of trajectories sampled during planning.
-- **Noise parameters (`noise_sigma`)**: The standard deviation of noise added to sampled trajectories.
+Located in `legged_mppi/control/controllers/configs` YAML files.
 
-#### **Cost Weights**
-- **State cost matrix (`Q`, `Q_robot`, `Q_box`)**: Penalizes deviations from the desired state.
-- **Control cost matrix (`R`)**: Penalizes large or sudden control inputs.
+Key parameters include:
+- `dt`: time step size
+- `horizon`: planning horizon length
+- `n_samples`: number of rollouts per iteration
+- `noise_sigma`: trajectory noise standard deviation
+- `lambda`: temperature parameter (balance exploration/exploitation)
 
-#### **Temperature (`lambda`)**
-- Governs the balance between exploration and exploitation in MPPI.
+---
 
-To adjust these settings, simply edit the relevant YAML file (e.g., `config.yaml`) and rerun your task.
+## Simulation Parameters
 
-### Robot Models and Task Scenes
-The robot models and task-specific scenes are located in `legged_mppi/models`.
+- **Time step (`dt`)**: simulation integration step
+- **Horizon length**: number of future steps in optimization
+- **Number of samples**: rollouts per MPPI iteration
+- **Noise sigma**: standard deviation for action perturbations
 
-This directory contains:
+---
 
-* Robot Models: MuJoCo XML files defining the robot's body, joints, actuators, and sensors.
-* Task Environments: XML files describing the physical environment for tasks, including obstacles and dynamic objects.
+## Cost Weights
 
-### Directory Structure
-Here’s an overview of the project structure for reference:
+Defined in YAML config as matrices/vectors:
+- **State cost (`Q`)**: penalize state deviation
+- **Control cost (`R`)**: penalize control effort
+- **Gait cost**: penalize undesired gait switches
 
-```graphql
-whole-boyd_mppi/
+---
+
+## Temperature (λ)
+
+Controls trade-off between trajectory cost minimization and stochastic exploration in MPPI.
+
+---
+
+## Robot Models & Task Scenes
+
+Located under `legged_mppi/models`:
+
+- **common.xml**: shared robot definitions and sensors
+- **go1/**: legged quadruped URDF and assets
+- **go2w/**: wheeled–legged adaptation URDF, assets, and hybrid base description
+- **scene_*.xml**: MuJoCo environments for each task (e.g., big_box.xml, stairs.xml)
+
+---
+
+## Directory Structure
+
+```bash
+tree -I "*.pyc|__pycache__" -L 2
 ├── legged_mppi
-│   ├── MPPI_tasks.ipynb
-│   ├── MPPI_tasks_push.ipynb
-│   ├── control
-│   │   ├── controllers
-│   │   │   ├── base_controller.py
-│   │   │   ├── configs
-│   │   │   │   ├── mppi_gait_config_big_box.yml
-│   │   │   │   ├── mppi_gait_config_push_box.yml
-│   │   │   │   ├── mppi_gait_config_stairs.yml
-│   │   │   │   └── mppi_gait_config_walk.yml
-│   │   │   ├── mppi_locomanipulation.py
-│   │   │   └── mppi_locomotion.py
-│   │   └── gait_scheduler
-│   │       ├── gaits
-│   │       │   ├── FAST
-│   │       │   │   └── *.tsv
-│   │       │   ├── MED
-│   │       │   │   └── *.tsv
-│   │       │   └── SLOW
-│   │       │       └── *.tsv
-│   │       └── scheduler.py
-│   ├── interface
-│   │   ├── configs
-│   │   │   └── simulator.yml
-│   │   └── simulator.py
-│   ├── models
-│   │   ├── common.xml
-│   │   └── go1
-│   │       ├── LICENSE
-│   │       ├── README.md
-│   │       ├── assets
-│   │       │   └── *.stl
-│   │       ├── go1_*.xml
-│   │       └── urdf
-│   │           └── go1.urdf
-│   ├── simulate_mppi.py
-│   └── utils
-│       ├── tasks.py
-│       └── transforms.py
+│   ├── control
+│   │   ├── controllers
+│   │   │   ├── base_controller.py
+│   │   │   ├── configs
+│   │   │   │   ├── mppi_gait_config_big_box.yml
+│   │   │   │   ├── mppi_gait_config_big_box_go2w.yml
+│   │   │   │   ├── mppi_gait_config_stairs.yml
+│   │   │   │   ├── mppi_gait_config_stairs_go2w.yml
+│   │   │   │   ├── mppi_gait_config_walk.yml
+│   │   │   │   └── mppi_gait_config_walk_go2w.yml
+│   │   │   ├── mppi_locomotion.py
+│   │   │   └── mppi_locomanipulation.py (unused)
+│   │   └── gait_scheduler
+│   │       ├── gaits
+│   │       │   ├── FAST
+│   │       │   │   └── *.tsv
+│   │       │   ├── MED
+│   │       │   │   └── *.tsv
+│   │       │   ├── SLOW
+│   │       │   │   └── *.tsv
+│   │       │   └── WHEELED
+│   │       │       └── *.tsv
+│   │       └── scheduler.py
+│   ├── interface
+│   │   ├── configs
+│   │   │   └── simulator.yml
+│   │   ├── simulator.py
+│   │   └── simulator_go2w.py
+│   ├── models
+│   │   ├── common.xml
+│   │   ├── go1
+│   │   │   ├── assets
+│   │       │   └── *.stl
+│   │   │   └── urdf
+│   │   │       └── go1.urdf
+│   │   └── go2w
+│   │       ├── assets
+│   │       │   └── *.stl
+│   │       └── urdf
+│   │           └──	go2w_description.urdf
+│   ├── utils
+│   │   ├── tasks.py
+│   │   └── transforms.py
+│   ├── simulate_mppi.py
+│   └── MUJOCO_LOG.TXT
+├── LICENSE
 ├── pyproject.toml
 ├── requirements.txt
-└── setup.py
-├── README.md
-├── LICENSE               
-
+├── setup.py
+└── README.md
 ```
+
+---
+
+## References
+
+Original MPPI source code inspiration:
+```bibtex
+@article{alvarez2024realtime,
+  title={Real-Time Whole-Body Control of Legged Robots with Model-Predictive Path Integral Control},
+  author={Alvarez-Padilla, Juan and Zhang, John Z. and Kwok, Sofia and Dolan, John M. and Manchester, Zachary},
+  year={2024},
+  note={arXiv:2409.10469}
+}
+```
+
+Our wheeled quadruped adaptation:
+```bibtex
+@inproceedings{kou2025wheeled,
+  title={{Whole Body Control of a Wheeled Quadruped using MPPI}},
+  author={Kou, Henry and Olin, Gabriel and Li, Benji and Liu, Wensen},
+  year={2025},
+  note={CMU Robotics Institute Course Project}
+}
+```
+
 ---
 
 ## License
-This project is licensed under the [MIT License](./LICENSE). Feel free to use, modify, and distribute this code.
 
-## Citation
-If you find this code useful, please consider citing our paper:
-```
-@article{alvarez2024realtime,
-        title={Real-Time Whole-Body Control of Legged Robots with Model-Predictive Path Integral Control},
-        author={Alvarez-Padilla, Juan and Zhang, John Z. and Kwok, Sofia and Dolan, John M. and Manchester, Zachary},
-        year={2024},
-        journal={arXiv preprint arXiv:2409.10469},
-        note={Available at: \url{https://arxiv.org/abs/2409.10469}}
-      }
-```
+This project is licensed under the [MIT License](./LICENSE). Feel free to use and modify.
