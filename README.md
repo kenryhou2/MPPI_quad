@@ -2,8 +2,8 @@
 
 <p align="center">
   
-  <img src="animations/mppi.gif"   alt="MPPI"   width="23%" />
-  <img src="animations/wheeled_quad_rough_terrain2x.gif"  alt="Roll over Rough Terrain Simulation" width="23%" />
+  <img src="animations/mppi.gif"   alt="MPPI"   width="50%" />
+  <img src="animations/wheeled_quad_rough_terrain2x.gif"  alt="Roll over Rough Terrain Simulation" width="50%" />
   <!-- <img src="animations/wheeled_quad_big_box5x.gif"        alt="Big Box Simulation"        width="23%" />
   <img src="animations/wheeled_quad_stairs2x.gif"         alt="Stairs Simulation"         width="23%" /> -->
 </p>
